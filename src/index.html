@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trivia Night</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: var(--hub-bg, #f9fafb);
+      --surface: var(--hub-surface, #ffffff);
+      --border: var(--hub-border, #e5e7eb);
+      --border-mid: var(--hub-border, #d1d5db);
+      --text: var(--hub-text, #111827);
+      --muted: var(--hub-text-muted, #6b7280);
+      --accent: var(--hub-primary, #111827);
+      --accent-hover: var(--hub-primary-hover, #374151);
+      --accent-fg: var(--hub-primary-fg, #ffffff);
+      --radius: var(--hub-radius, 10px);
+      --green: #047857; --green-soft: #d1fae5;
+      --amber: #b45309; --amber-soft: #fef3c7;
+      --red: #b91c1c; --red-soft: #fee2e2;
+      --blue: #1d4ed8; --blue-soft: #dbeafe;
+      --shadow: 0 1px 3px rgba(15, 23, 42, .07);
+    }
+    body {
+      min-height: 100vh; background: var(--bg); color: var(--text);
+      font-family: var(--hub-font, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+      font-size: var(--hub-font-size, 15px); line-height: 1.5;
+    }
+    .app { max-width: 680px; margin: 0 auto; padding: 16px; }
+    .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    h1 { font-size: 1.35rem; line-height: 1.2; }
+    h2 { font-size: .95rem; }
+    .muted { color: var(--muted); }
+    .tiny { font-size: .78rem; }
+    .stack { display: grid; gap: 8px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      border: 1px solid transparent; border-radius: 8px; padding: 8px 12px;
+      font: inherit; font-size: .86rem; font-weight: 700; cursor: pointer;
+      min-height: 38px; background: var(--accent); color: var(--accent-fg);
+    }
+    .btn:hover { background: var(--accent-hover); }
+    .btn:disabled { opacity: .48; cursor: default; }
+    .btn-ghost { background: transparent; color: var(--text); border-color: var(--border-mid); }
+    .btn-ghost:hover { background: rgba(127,127,127,.08); }
+    .btn-danger { background: var(--red-soft); color: var(--red); }
+    .btn-sm { min-height: 31px; padding: 5px 10px; font-size: .78rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px; }
+    .back { background: none; border: 0; color: var(--muted); cursor: pointer; font: inherit; font-size: .82rem; font-weight: 700; padding: 0; margin-bottom: 8px; }
+    .round-card {
+      display: flex; align-items: center; gap: 12px; padding: 13px 14px; width: 100%;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); cursor: pointer; text-align: left; font: inherit; color: var(--text);
+    }
+    .round-card:hover { border-color: var(--accent); }
+    .round-body { flex: 1; min-width: 0; }
+    .round-title { font-weight: 750; }
+    .round-meta { color: var(--muted); font-size: .8rem; }
+    .pill {
+      display: inline-flex; align-items: center; min-height: 20px; padding: 1px 9px;
+      border-radius: 999px; white-space: nowrap; background: #f1f5f9; color: var(--muted);
+      font-size: .72rem; font-weight: 800;
+    }
+    .pill.open { background: var(--green-soft); color: var(--green); }
+    .pill.draft { background: var(--amber-soft); color: var(--amber); }
+    .pill.closed { background: var(--blue-soft); color: var(--blue); }
+    .q-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 13px 14px; }
+    .q-prompt { font-weight: 750; font-size: .95rem; }
+    .q-points { color: var(--muted); font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+    .answer-row { display: flex; gap: 6px; margin-top: 9px; }
+    .answer-row input { flex: 1; }
+    .sealed { color: var(--muted); font-size: .82rem; margin-top: 8px; }
+    .guess-line { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px dashed var(--border); margin-top: 6px; font-size: .88rem; flex-wrap: wrap; }
+    .guess-line:first-of-type { border-top: 0; }
+    .guess-who { font-weight: 800; font-size: .78rem; color: var(--muted); min-width: 64px; }
+    .guess-what { flex: 1; }
+    .grade-btns { display: flex; gap: 4px; }
+    .grade-btns button {
+      border: 1px solid var(--border-mid); background: var(--surface); border-radius: 6px;
+      font-size: .78rem; padding: 2px 8px; cursor: pointer; color: var(--text);
+    }
+    .grade-btns button.yes.sel { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+    .grade-btns button.no.sel { background: var(--red-soft); border-color: var(--red); color: var(--red); }
+    .mark { font-size: .9rem; }
+    .reveal-answer { margin-top: 8px; background: var(--blue-soft); color: var(--blue); border-radius: 8px; padding: 7px 10px; font-size: .85rem; font-weight: 700; }
+    .score-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .score-rank { font-weight: 800; width: 24px; text-align: center; }
+    .score-name { flex: 1; font-weight: 700; }
+    .score-pts { font-weight: 800; }
+    .empty { color: var(--muted); text-align: center; padding: 30px 16px; }
+    .error { background: var(--red-soft); color: var(--red); padding: 9px 12px; border-radius: 8px; margin-bottom: 10px; font-size: .86rem; }
+    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 18px 2px 8px; }
+    input, textarea {
+      width: 100%; border: 1.5px solid var(--border-mid); border-radius: 8px;
+      padding: 9px 11px; font: inherit; background: var(--surface); color: var(--text);
+    }
+    input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.42); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 16px; }
+    .modal { background: var(--surface); border-radius: 14px; padding: 22px; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,.25); max-height: 92vh; overflow-y: auto; }
+    .modal h2 { font-size: 1.05rem; margin-bottom: 16px; }
+    .form { display: grid; gap: 12px; }
+    .field { display: grid; gap: 5px; }
+    .grid2 { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+    label { font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 800; }
+    .modal-actions { display: flex; gap: 8px; margin-top: 6px; justify-content: flex-end; }
+    .modal-left { margin-right: auto; }
+  </style>
+  <base href="/run/trivia-night/">
+</head>
+<body>
+<div class="app">
+  <div id="root" class="empty">Loading…</div>
+</div>
+
+<script type="module">
+import { esc, hubConfirm, hubAlert } from "/hub-sdk.js";
+import {
+  isHost, statusLabel, visibleRounds, roundQuestions, guessFor,
+  answeredCount, scoreboard, gradingByGuess, looksCorrect,
+} from "./logic.js";
+
+const CONTEXT = window.__CONTEXT_URL ?? "";
+const DB = window.__DB_URL ?? "";
+const HUB_MEMBER = window.__CURRENT_MEMBER ?? null;
+
+let members = [];
+let memberMap = new Map();
+let me = null;
+let rounds = [];
+let questions = []; // correct_answer is NULL unless I'm the host (column_read_acls)
+let guesses = [];   // hub-filtered: mine + released rounds
+let gradings = [];
+let openRoundId = null;
+let error = "";
+let modalEl = null;
+
+function nowIso() { return new Date().toISOString(); }
+function memberName(id) { return memberMap.get(id)?.name ?? "Someone"; }
+
+/* ── DB helper ─────────────────────────────────────────────────────────────── */
+async function db(sql, params = []) {
+  if (!DB) return { rows: [] };
+  const res = await fetch(DB, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sql, params }),
+  });
+  const json = await res.json();
+  if (json.error) throw new Error(json.error);
+  return json;
+}
+
+/* ── Loading ───────────────────────────────────────────────────────────────── */
+async function loadMembers() {
+  if (!CONTEXT) {
+    members = [
+      { id: "demo-1", name: "Alex", role: "adult" },
+      { id: "demo-2", name: "Jordan", role: "adult" },
+      { id: "demo-3", name: "Casey", role: "child" },
+    ];
+  } else {
+    try {
+      const res = await fetch(`${CONTEXT}?keys=family.members`);
+      members = ((await res.json())["family.members"]) ?? [];
+    } catch { members = []; }
+  }
+  memberMap = new Map(members.map((m) => [m.id, m]));
+  me = HUB_MEMBER ?? members[0] ?? { id: "guest", name: "Guest", role: "adult" };
+}
+
+async function loadData() {
+  if (!DB) {
+    rounds = [{ id: "r1", title: "Friday Night Trivia", status: "open", visibility: "everyone", created_by: "demo-1", created_at: nowIso() }];
+    questions = [
+      { id: "q1", round_id: "r1", prompt: "What's the largest planet in our solar system?", correct_answer: me?.id === "demo-1" ? "Jupiter" : null, revealed_answer: "", points: 1, sort_order: 0, created_by: "demo-1", created_at: nowIso() },
+      { id: "q2", round_id: "r1", prompt: "In what year did the first person walk on the Moon?", correct_answer: me?.id === "demo-1" ? "1969" : null, revealed_answer: "", points: 2, sort_order: 1, created_by: "demo-1", created_at: nowIso() },
+    ];
+    guesses = [];
+    gradings = [];
+    return;
+  }
+  const [r, q, g, gr] = await Promise.all([
+    db("SELECT id, title, status, visibility, created_by, created_at FROM app_trivia_night__rounds ORDER BY created_at DESC LIMIT 50"),
+    db("SELECT id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at FROM app_trivia_night__questions LIMIT 600"),
+    db("SELECT id, round_id, question_id, member_id, guess_text, created_at FROM app_trivia_night__guesses LIMIT 1500"),
+    db("SELECT id, round_id, guess_id, correct, points_awarded, graded_by, created_at FROM app_trivia_night__gradings LIMIT 1500"),
+  ]);
+  rounds = r.rows ?? [];
+  questions = q.rows ?? [];
+  guesses = g.rows ?? [];
+  gradings = gr.rows ?? [];
+}
+
+async function refresh() {
+  error = "";
+  try {
+    await Promise.all([loadMembers(), loadData()]);
+    if (openRoundId && !rounds.some((r) => r.id === openRoundId)) openRoundId = null;
+    render();
+  } catch (e) { error = e.message; render(); }
+}
+
+function showError(msg) { error = msg; render(); }
+
+/* ── Mutations ─────────────────────────────────────────────────────────────── */
+async function createRound(title) {
+  const row = { id: crypto.randomUUID(), title, status: "draft", visibility: "everyone", created_by: me.id, created_at: nowIso() };
+  rounds = [row, ...rounds];
+  openRoundId = row.id;
+  closeModal(); render();
+  try {
+    await db("INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?,?,?,?,?,?)",
+      [row.id, row.title, row.status, row.visibility, row.created_by, row.created_at]);
+  } catch (e) {
+    rounds = rounds.filter((r) => r.id !== row.id);
+    openRoundId = null;
+    showError(e.message);
+  }
+}
+
+async function setRoundStatus(id, status) {
+  const idx = rounds.findIndex((r) => r.id === id);
+  if (idx === -1) return;
+  const prev = rounds[idx];
+  rounds[idx] = { ...prev, status };
+  render();
+  try {
+    await db("UPDATE app_trivia_night__rounds SET status=? WHERE id=?", [status, id]);
+    if (status === "closed") await refresh(); // sealed guesses just released
+  } catch (e) { rounds[idx] = prev; showError(e.message); }
+}
+
+async function deleteRound(id) {
+  const ok = await hubConfirm({ message: "Delete this round?", description: "Questions, guesses, and scores go with it.", confirmLabel: "Delete", destructive: true });
+  if (!ok) return;
+  const prev = { rounds, questions, guesses, gradings };
+  rounds = rounds.filter((r) => r.id !== id);
+  if (openRoundId === id) openRoundId = null;
+  render();
+  try { await db("DELETE FROM app_trivia_night__rounds WHERE id=?", [id]); }
+  catch (e) { ({ rounds, questions, guesses, gradings } = prev); showError(e.message); }
+}
+
+async function addQuestion(roundId, prompt, answer, points) {
+  const row = {
+    id: crypto.randomUUID(), round_id: roundId, prompt, correct_answer: answer,
+    revealed_answer: "", points, sort_order: roundQuestions(questions, roundId).length,
+    created_by: me.id, created_at: nowIso(),
+  };
+  questions = [...questions, row];
+  closeModal(); render();
+  try {
+    await db("INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?,?,?,?,?,?,?,?,?)",
+      [row.id, row.round_id, row.prompt, row.correct_answer, row.revealed_answer, row.points, row.sort_order, row.created_by, row.created_at]);
+  } catch (e) { questions = questions.filter((q) => q.id !== row.id); showError(e.message); }
+}
+
+async function deleteQuestion(id) {
+  const prev = questions;
+  questions = questions.filter((q) => q.id !== id);
+  render();
+  try { await db("DELETE FROM app_trivia_night__questions WHERE id=?", [id]); }
+  catch (e) { questions = prev; showError(e.message); }
+}
+
+async function submitGuess(round, questionId, text) {
+  const row = { id: crypto.randomUUID(), round_id: round.id, question_id: questionId, member_id: me.id, guess_text: text, created_at: nowIso() };
+  guesses = [...guesses, row];
+  render();
+  try {
+    await db("INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?,?,?,?,?,?)",
+      [row.id, row.round_id, row.question_id, row.member_id, row.guess_text, row.created_at]);
+  } catch (e) { guesses = guesses.filter((g) => g.id !== row.id); showError(e.message); }
+}
+
+async function gradeGuess(round, guess, correct) {
+  const q = questions.find((x) => x.id === guess.question_id);
+  const points = correct ? Number(q?.points ?? 1) : 0;
+  const existing = gradings.find((g) => g.guess_id === guess.id);
+  if (existing) {
+    const prev = { ...existing };
+    existing.correct = correct ? 1 : 0;
+    existing.points_awarded = points;
+    render();
+    try {
+      await db("UPDATE app_trivia_night__gradings SET correct=?, points_awarded=? WHERE id=?", [existing.correct, existing.points_awarded, existing.id]);
+    } catch (e) { Object.assign(existing, prev); showError(e.message); }
+    return;
+  }
+  const row = { id: crypto.randomUUID(), round_id: round.id, guess_id: guess.id, correct: correct ? 1 : 0, points_awarded: points, graded_by: me.id, created_at: nowIso() };
+  gradings = [...gradings, row];
+  render();
+  try {
+    await db("INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?,?,?,?,?,?,?)",
+      [row.id, row.round_id, row.guess_id, row.correct, row.points_awarded, row.graded_by, row.created_at]);
+  } catch (e) { gradings = gradings.filter((g) => g.id !== row.id); showError(e.message); }
+}
+
+/** Host-only: copy each question's (host-visible) answer into revealed_answer. */
+async function revealAnswers(round) {
+  const qs = roundQuestions(questions, round.id).filter((q) => q.correct_answer && !q.revealed_answer);
+  for (const q of qs) {
+    const prev = q.revealed_answer;
+    q.revealed_answer = q.correct_answer;
+    try {
+      await db("UPDATE app_trivia_night__questions SET revealed_answer=? WHERE id=?", [q.correct_answer, q.id]);
+    } catch (e) { q.revealed_answer = prev; showError(e.message); return; }
+  }
+  render();
+}
+
+/* ── Rendering ─────────────────────────────────────────────────────────────── */
+function renderRoundList() {
+  const list = visibleRounds(rounds, me);
+  return `
+    <div class="topbar">
+      <div>
+        <h1>🧠 Trivia Night</h1>
+        <p class="muted tiny">Sealed guesses. No cheating possible — the hub keeps answers hidden.</p>
+      </div>
+      <button class="btn" data-new-round>+ New round</button>
+    </div>
+    ${error ? `<div class="error">${esc(error)}</div>` : ""}
+    ${list.length ? `<div class="stack">${list.map((r) => {
+      const qCount = roundQuestions(questions, r.id).length;
+      return `
+      <button class="round-card" data-open="${esc(r.id)}">
+        <div class="round-body">
+          <div class="round-title">${esc(r.title)}</div>
+          <div class="round-meta">Hosted by ${esc(memberName(r.created_by))} · ${qCount} question${qCount === 1 ? "" : "s"}</div>
+        </div>
+        <span class="pill ${esc(r.status)}">${esc(statusLabel(r.status))}</span>
+      </button>`;
+    }).join("")}</div>` : `<div class="card empty">No rounds yet — host the first one!</div>`}
+  `;
+}
+
+function renderQuestionForPlayer(round, q) {
+  const mine = guessFor(guesses, q.id, me?.id);
+  if (round.status === "closed") return renderQuestionClosed(round, q);
+  return `
+    <div class="q-card">
+      <div class="q-points">${esc(String(Number(q.points) || 1))} pt${Number(q.points) === 1 ? "" : "s"}</div>
+      <div class="q-prompt">${esc(q.prompt)}</div>
+      ${mine
+        ? `<div class="sealed">🔒 Your guess is sealed: <strong>${esc(mine.guess_text)}</strong></div>`
+        : round.status === "open"
+          ? `<form class="answer-row" data-guess-form="${esc(q.id)}">
+               <input placeholder="Your guess…" maxlength="200" />
+               <button type="submit" class="btn btn-sm">Lock in</button>
+             </form>`
+          : `<div class="sealed">Waiting for the host to open the round.</div>`}
+    </div>`;
+}
+
+function renderQuestionClosed(round, q) {
+  const qGuesses = guesses.filter((g) => g.question_id === q.id);
+  const grades = gradingByGuess(gradings, round.id);
+  const host = isHost(round, me);
+  return `
+    <div class="q-card">
+      <div class="q-points">${esc(String(Number(q.points) || 1))} pt${Number(q.points) === 1 ? "" : "s"}</div>
+      <div class="q-prompt">${esc(q.prompt)}</div>
+      ${q.revealed_answer ? `<div class="reveal-answer">Answer: ${esc(q.revealed_answer)}</div>` : host && q.correct_answer ? `<div class="sealed">Answer (only you see this until reveal): <strong>${esc(q.correct_answer)}</strong></div>` : ""}
+      ${qGuesses.length ? qGuesses.map((g) => {
+        const grade = grades.get(g.id);
+        const suggest = host && !grade && q.correct_answer && looksCorrect(g.guess_text, q.correct_answer);
+        return `
+          <div class="guess-line">
+            <span class="guess-who">${esc(memberName(g.member_id))}</span>
+            <span class="guess-what">${esc(g.guess_text)}${suggest ? ` <span class="tiny muted">(looks right)</span>` : ""}</span>
+            ${grade ? `<span class="mark">${Number(grade.correct) ? "✅" : "❌"}</span>` : ""}
+            ${host ? `
+              <span class="grade-btns">
+                <button class="yes ${grade && Number(grade.correct) ? "sel" : ""}" data-grade-yes="${esc(g.id)}">✓</button>
+                <button class="no ${grade && !Number(grade.correct) ? "sel" : ""}" data-grade-no="${esc(g.id)}">✗</button>
+              </span>` : ""}
+          </div>`;
+      }).join("") : `<div class="sealed">No guesses came in.</div>`}
+    </div>`;
+}
+
+function renderRound(round) {
+  const host = isHost(round, me);
+  const qs = roundQuestions(questions, round.id);
+  const myCount = answeredCount(guesses, questions, round.id, me?.id);
+  const scores = scoreboard(gradings, guesses, round.id);
+  return `
+    <button class="back" data-back>← All rounds</button>
+    <div class="topbar">
+      <div>
+        <h1>${esc(round.title)}</h1>
+        <p class="muted tiny">${esc(statusLabel(round.status))} · hosted by ${esc(memberName(round.created_by))}${round.status === "open" && !host ? ` · you've answered ${myCount}/${qs.length}` : ""}</p>
+      </div>
+      ${host ? `
+        <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end">
+          ${round.status === "draft" ? `<button class="btn btn-sm" data-open-round>Open round</button>` : ""}
+          ${round.status === "open" ? `<button class="btn btn-sm" data-close-round>Close & reveal</button>` : ""}
+          ${round.status === "closed" && qs.some((q) => q.correct_answer && !q.revealed_answer) ? `<button class="btn btn-sm" data-reveal-answers>Reveal answers</button>` : ""}
+          ${round.status === "draft" ? `<button class="btn btn-ghost btn-sm" data-add-question>+ Question</button>` : ""}
+          <button class="btn btn-danger btn-sm" data-delete-round>Delete</button>
+        </div>` : ""}
+    </div>
+    ${error ? `<div class="error">${esc(error)}</div>` : ""}
+    ${round.status === "closed" && scores.length ? `
+      <div class="section-head"><h2>🏆 Scoreboard</h2></div>
+      <div class="stack" style="margin-bottom:14px">
+        ${scores.map((s, i) => `
+          <div class="score-row">
+            <span class="score-rank">${i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1}</span>
+            <span class="score-name">${esc(memberName(s.member_id))}</span>
+            <span class="score-pts">${s.points} pts</span>
+          </div>`).join("")}
+      </div>` : ""}
+    ${qs.length
+      ? `<div class="stack">${qs.map((q) => host && round.status === "draft" ? `
+          <div class="q-card">
+            <div class="q-points">${esc(String(Number(q.points) || 1))} pts</div>
+            <div class="q-prompt">${esc(q.prompt)}</div>
+            <div class="sealed">Answer: <strong>${esc(q.correct_answer ?? "")}</strong><button class="btn btn-ghost btn-sm" data-delete-question="${esc(q.id)}" style="margin-left:8px">Remove</button></div>
+          </div>` : renderQuestionForPlayer(round, q)).join("")}</div>`
+      : `<div class="card empty tiny">${host ? "Add your first question, then open the round." : "The host is still writing questions."}</div>`}
+  `;
+}
+
+function render() {
+  const root = document.getElementById("root");
+  root.className = "app-root";
+  const round = openRoundId ? rounds.find((r) => r.id === openRoundId) : null;
+  root.innerHTML = round ? renderRound(round) : renderRoundList();
+  root.querySelectorAll("[data-guess-form]").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const qid = form.getAttribute("data-guess-form");
+      const input = form.querySelector("input");
+      const text = input.value.trim();
+      if (!text) { input.focus(); return; }
+      const btn = form.querySelector("button");
+      if (btn) { btn.disabled = true; btn.textContent = "Sealing…"; }
+      submitGuess(round, qid, text).catch((err) => showError(err.message));
+    });
+  });
+}
+
+/* ── Modals ────────────────────────────────────────────────────────────────── */
+function openModal(html) {
+  closeModal();
+  modalEl = document.createElement("div");
+  modalEl.className = "overlay";
+  modalEl.innerHTML = `<div class="modal">${html}</div>`;
+  modalEl.addEventListener("click", (e) => { if (e.target === modalEl) closeModal(); });
+  document.body.appendChild(modalEl);
+}
+function closeModal() { modalEl?.remove(); modalEl = null; }
+
+function openRoundEditor() {
+  openModal(`
+    <h2>New trivia round</h2>
+    <form class="form" id="round-form">
+      <div class="field"><label for="r-title">Title</label><input id="r-title" data-autofocus placeholder="Friday Night Trivia" required /></div>
+      <p class="tiny muted">You'll be the host: add questions in draft, open the round for guesses, then close it to reveal and grade.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-cancel>Cancel</button>
+        <button type="submit" class="btn">Create</button>
+      </div>
+    </form>`);
+  modalEl.querySelector("[data-autofocus]")?.focus();
+  modalEl.querySelector("#round-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const title = document.getElementById("r-title").value.trim();
+    if (!title) { document.getElementById("r-title").focus(); return; }
+    const btn = modalEl?.querySelector('button[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = "Creating…"; }
+    createRound(title).catch((err) => showError(err.message));
+  });
+}
+
+function openQuestionEditor(roundId) {
+  openModal(`
+    <h2>Add a question</h2>
+    <form class="form" id="question-form">
+      <div class="field"><label for="q-prompt">Question</label><textarea id="q-prompt" data-autofocus required></textarea></div>
+      <div class="grid2">
+        <div class="field"><label for="q-answer">Correct answer <span class="muted" style="text-transform:none">(only you can see it)</span></label><input id="q-answer" required /></div>
+        <div class="field"><label for="q-points">Points</label><input id="q-points" type="number" min="1" max="10" value="1" /></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-cancel>Cancel</button>
+        <button type="submit" class="btn">Add</button>
+      </div>
+    </form>`);
+  modalEl.querySelector("[data-autofocus]")?.focus();
+  modalEl.querySelector("#question-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const prompt = document.getElementById("q-prompt").value.trim();
+    const answer = document.getElementById("q-answer").value.trim();
+    if (!prompt) { document.getElementById("q-prompt").focus(); return; }
+    if (!answer) { document.getElementById("q-answer").focus(); return; }
+    const points = Math.max(1, Math.min(10, Number(document.getElementById("q-points").value) || 1));
+    const btn = modalEl?.querySelector('button[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = "Adding…"; }
+    addQuestion(roundId, prompt, answer, points).catch((err) => showError(err.message));
+  });
+}
+
+/* ── Events ────────────────────────────────────────────────────────────────── */
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("button");
+  if (!t) return;
+  const round = openRoundId ? rounds.find((r) => r.id === openRoundId) : null;
+  if (t.hasAttribute("data-open")) { openRoundId = t.getAttribute("data-open"); render(); return; }
+  if (t.hasAttribute("data-back")) { openRoundId = null; render(); return; }
+  if (t.hasAttribute("data-cancel")) { closeModal(); return; }
+  if (t.hasAttribute("data-new-round")) { openRoundEditor(); return; }
+  if (!round) return;
+  if (t.hasAttribute("data-add-question")) { openQuestionEditor(round.id); return; }
+  if (t.hasAttribute("data-delete-question")) { deleteQuestion(t.getAttribute("data-delete-question")).catch((err) => showError(err.message)); return; }
+  if (t.hasAttribute("data-open-round")) {
+    if (!roundQuestions(questions, round.id).length) { hubAlert("Add at least one question first."); return; }
+    setRoundStatus(round.id, "open").catch((err) => showError(err.message));
+    return;
+  }
+  if (t.hasAttribute("data-close-round")) { setRoundStatus(round.id, "closed").catch((err) => showError(err.message)); return; }
+  if (t.hasAttribute("data-reveal-answers")) { revealAnswers(round).catch((err) => showError(err.message)); return; }
+  if (t.hasAttribute("data-delete-round")) { deleteRound(round.id); return; }
+  if (t.hasAttribute("data-grade-yes") || t.hasAttribute("data-grade-no")) {
+    const yes = t.hasAttribute("data-grade-yes");
+    const guessId = t.getAttribute(yes ? "data-grade-yes" : "data-grade-no");
+    const guess = guesses.find((g) => g.id === guessId);
+    if (guess) gradeGuess(round, guess, yes).catch((err) => showError(err.message));
+  }
+});
+
+refresh();
+</script>
+</body>
+</html>

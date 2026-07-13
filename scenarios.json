@@ -1,0 +1,97 @@
+{
+  "scenarios": [
+    {
+      "name": "answers are masked from players, guesses sealed until close, only the host adds questions and gradings",
+      "members": { "host": "adult", "player": "adult" },
+      "steps": [
+        {
+          "action": "db",
+          "as": "host",
+          "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, 'Test Round', 'open', 'everyone', ?, '2099-01-01T00:00:00Z')",
+          "params": ["round-1", "{{host}}"],
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "host",
+          "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, 'Largest planet?', 'Jupiter', '', 1, 0, ?, '2099-01-01T00:01:00Z')",
+          "params": ["q-1", "round-1", "{{host}}"],
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "player",
+          "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, 'Forged question', 'x', '', 1, 1, ?, '2099-01-01T00:02:00Z')",
+          "params": ["q-forged", "round-1", "{{player}}"],
+          "expect": { "status": 403 }
+        },
+        {
+          "action": "db",
+          "as": "player",
+          "sql": "SELECT id, prompt, correct_answer FROM app_trivia_night__questions",
+          "expect": { "status": 200, "rowCount": 1, "rowsContain": [{ "id": "q-1", "correct_answer": null }] }
+        },
+        {
+          "action": "db",
+          "as": "player",
+          "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, 'Jupiter', '2099-01-01T00:03:00Z')",
+          "params": ["g-1", "round-1", "q-1", "{{player}}"],
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "host",
+          "sql": "SELECT id FROM app_trivia_night__guesses",
+          "expect": { "status": 200, "rowCount": 0 }
+        },
+        {
+          "action": "db",
+          "as": "player",
+          "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, 1, 99, ?, '2099-01-01T00:04:00Z')",
+          "params": ["grade-forged", "round-1", "g-1", "{{player}}"],
+          "expect": { "status": 403 }
+        },
+        {
+          "action": "db",
+          "as": "player",
+          "sql": "UPDATE app_trivia_night__rounds SET status='closed' WHERE id = ?",
+          "params": ["round-1"],
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "player",
+          "sql": "SELECT id FROM app_trivia_night__guesses WHERE member_id = 'nobody'",
+          "expect": { "status": 200, "rowCount": 0 }
+        },
+        {
+          "action": "db",
+          "as": "host",
+          "sql": "SELECT id, status FROM app_trivia_night__rounds WHERE id = ?",
+          "params": ["round-1"],
+          "expect": { "status": 200, "rowsContain": [{ "id": "round-1", "status": "open" }] }
+        },
+        {
+          "action": "db",
+          "as": "host",
+          "sql": "UPDATE app_trivia_night__rounds SET status='closed' WHERE id = ?",
+          "params": ["round-1"],
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "host",
+          "sql": "SELECT id, guess_text FROM app_trivia_night__guesses",
+          "expect": { "status": 200, "rowCount": 1, "rowsContain": [{ "id": "g-1" }] }
+        },
+        {
+          "action": "db",
+          "as": "host",
+          "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, 1, 1, ?, '2099-01-01T00:05:00Z')",
+          "params": ["grade-1", "round-1", "g-1", "{{host}}"],
+          "expect": { "status": 200 }
+        }
+      ]
+    }
+  ]
+}
