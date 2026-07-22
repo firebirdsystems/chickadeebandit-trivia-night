@@ -1,5 +1,6 @@
 {
   "id": "trivia-night",
+  "contexts": ["household", "shared_space"],
   "name": "Trivia Night",
   "version": "1.0.0",
   "description": "Host a family trivia round: write questions with hidden answers, everyone submits sealed guesses, then close the round to reveal, grade, and crown a winner.",
