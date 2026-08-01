@@ -76,3 +76,12 @@ export function looksCorrect(guessText, correctAnswer) {
   const b = norm(correctAnswer);
   return !!a && !!b && a === b;
 }
+
+/**
+ * Fields the in-app search matches against (see hub-sdk `searchMatch`).
+ * A round only carries its title, so the host's name is passed in —
+ * "the one Sam hosted" is how an old round gets found.
+ */
+export function searchableFields(round, hostName = "") {
+  return [round.title, hostName];
+}

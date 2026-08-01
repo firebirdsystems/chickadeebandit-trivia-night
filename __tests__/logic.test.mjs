@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   isHost, statusLabel, visibleRounds, roundQuestions, guessFor,
-  answeredCount, scoreboard, gradingByGuess, looksCorrect,
+  answeredCount, scoreboard, gradingByGuess, looksCorrect, searchableFields,
 } from "../src/logic.js";
 
 const me = { id: "host-1", role: "adult" };
@@ -88,5 +88,13 @@ describe("statusLabel", () => {
     expect(statusLabel("draft")).toMatch(/Draft/);
     expect(statusLabel("open")).toMatch(/Open/);
     expect(statusLabel("closed")).toMatch(/Closed/);
+  });
+});
+
+describe("searchableFields", () => {
+  it("matches on the host name passed in alongside the round title", () => {
+    const fields = searchableFields({ title: "Christmas quiz" }, "Sam");
+    expect(fields).toContain("Christmas quiz");
+    expect(fields).toContain("Sam");
   });
 });
