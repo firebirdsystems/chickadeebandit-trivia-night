@@ -24,7 +24,17 @@
       "member_column": "created_by",
       "visibility_column": "visibility",
       "everyone_values": ["everyone"],
-      "write_owner_only": true
+      "write_owner_only": true,
+      "retain_days": {
+        "default": 365,
+        "timestamp_column": "created_at",
+        "override_key": "round_history",
+        "dependent_tables": [
+          { "table": "questions", "foreign_key": "round_id" },
+          { "table": "guesses", "foreign_key": "round_id" },
+          { "table": "gradings", "foreign_key": "round_id" }
+        ]
+      }
     },
     "questions": {
       "kind": "inherit_visibility",
@@ -60,6 +70,12 @@
       "writer_column": "graded_by",
       "insert_only_by_parent_column_member": "created_by"
     }
+  },
+  "member_references": {
+    "rounds": { "column": "created_by", "on_removed": "keep" },
+    "questions": { "column": "created_by", "on_removed": "keep" },
+    "guesses": { "column": "member_id", "on_removed": "delete" },
+    "gradings": { "column": "graded_by", "on_removed": "keep" }
   },
   "nav": { "label": "Trivia" },
   "resource_limits": {

@@ -181,16 +181,34 @@ async function loadData() {
     gradings = [];
     return;
   }
-  const [r, q, g, gr] = await Promise.all([
-    db("SELECT id, title, status, visibility, created_by, created_at FROM app_trivia_night__rounds ORDER BY created_at DESC LIMIT 50"),
-    db("SELECT id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at FROM app_trivia_night__questions LIMIT 600"),
-    db("SELECT id, round_id, question_id, member_id, guess_text, created_at FROM app_trivia_night__guesses LIMIT 1500"),
-    db("SELECT id, round_id, guess_id, correct, points_awarded, graded_by, created_at FROM app_trivia_night__gradings LIMIT 1500"),
-  ]);
+  const r = await db("SELECT id, title, status, visibility, created_by, created_at FROM app_trivia_night__rounds ORDER BY created_at DESC LIMIT 50");
   rounds = r.rows ?? [];
-  questions = q.rows ?? [];
-  guesses = g.rows ?? [];
-  gradings = gr.rows ?? [];
+  ({ questions, guesses, gradings } = await loadChildrenFor(rounds));
+}
+
+/**
+ * Questions, guesses and gradings for exactly the rounds we loaded.
+ *
+ * These used to be blind `LIMIT 600` / `LIMIT 1500` reads with NO `ORDER BY`,
+ * which is an arbitrary slice of the table once it outgrows the number — a few
+ * hundred questions in, tonight's round could render with some of its questions
+ * missing and a scoreboard that silently under-counts, and nothing errors.
+ * Scoping to the 50 loaded rounds bounds the read by the same window the UI
+ * shows, instead of by a number that ages out. (Question of the Day had the
+ * identical defect; this is the same fix.)
+ */
+async function loadChildrenFor(roundList) {
+  if (!roundList.length) return { questions: [], guesses: [], gradings: [] };
+  const ids = roundList.map((r) => r.id);
+  const holes = ids.map(() => "?").join(",");
+  const [q, g, gr] = await Promise.all([
+    // column_read_acls masks correct_answer to the host; sealed_until hides
+    // other players' guesses until the round closes. Both are hub-enforced.
+    db(`SELECT id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at FROM app_trivia_night__questions WHERE round_id IN (${holes})`, ids),
+    db(`SELECT id, round_id, question_id, member_id, guess_text, created_at FROM app_trivia_night__guesses WHERE round_id IN (${holes})`, ids),
+    db(`SELECT id, round_id, guess_id, correct, points_awarded, graded_by, created_at FROM app_trivia_night__gradings WHERE round_id IN (${holes})`, ids),
+  ]);
+  return { questions: q.rows ?? [], guesses: g.rows ?? [], gradings: gr.rows ?? [] };
 }
 
 async function refresh() {
