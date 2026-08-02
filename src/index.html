@@ -131,6 +131,20 @@ import {
 const CONTEXT = window.__CONTEXT_URL ?? "";
 const DB = window.__DB_URL ?? "";
 const HUB_MEMBER = window.__CURRENT_MEMBER ?? null;
+const EVENTS = window.__EVENTS_URL ?? "";
+
+async function publishEvent(type, subjectId, payload = {}) {
+  if (!EVENTS) return;
+  try {
+    await fetch(EVENTS, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type, subject_id: subjectId, payload }),
+    });
+  } catch {
+    // The status change is already written; a failed publish is not fatal.
+  }
+}
 
 let members = [];
 let memberMap = new Map();
@@ -255,6 +269,15 @@ async function setRoundStatus(id, status) {
   try {
     await db("UPDATE app_trivia_night__rounds SET status=? WHERE id=?", [status, id]);
     if (status === "closed") await refresh(); // sealed guesses just released
+    // Real transitions only — re-saving the same status publishes nothing. No
+    // question, answer or guess text travels: opening is an invitation and
+    // closing is the reveal, and both are already household-visible facts.
+    if (status !== prev.status && (status === "open" || status === "closed")) {
+      await publishEvent(status === "open" ? "trivia.round_opened" : "trivia.round_closed", id, {
+        title: prev.title,
+        host_id: prev.created_by,
+      });
+    }
   } catch (e) { rounds[idx] = prev; showError(e.message); }
 }
 

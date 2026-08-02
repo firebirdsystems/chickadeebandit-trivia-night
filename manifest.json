@@ -78,6 +78,23 @@
     "gradings": { "column": "graded_by", "on_removed": "keep" }
   },
   "nav": { "label": "Trivia" },
+  "glance": {
+    "source": {
+      "kind": "sql",
+      "query": "SELECT COUNT(*) AS n FROM app_trivia_night__rounds r LEFT JOIN app_trivia_night__guesses g ON g.round_id = r.id WHERE r.status = 'open' AND g.id IS NULL LIMIT 1"
+    },
+    "display": {
+      "template": "badge",
+      "count": "n",
+      "label": "trivia rounds waiting for you",
+      "severity": "info"
+    }
+  },
+  "publishes": ["trivia.round_opened", "trivia.round_closed"],
+  "publish_acls": {
+    "trivia.round_opened": { "require_role": "member" },
+    "trivia.round_closed": { "require_role": "member" }
+  },
   "resource_limits": {
     "max_db_bytes": 52428800
   }
