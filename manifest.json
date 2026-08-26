@@ -18,6 +18,9 @@
     "requires_approval": false
   },
   "storage": "db",
+  "preload": {
+    "rounds": {"sql": "SELECT id, title, status, visibility, created_by, created_at FROM app_trivia_night__rounds ORDER BY created_at DESC LIMIT 50"}
+  },
   "row_policies": {
     "rounds": {
       "kind": "owner_or_visibility",
