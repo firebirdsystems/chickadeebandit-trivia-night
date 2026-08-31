@@ -1,0 +1,296 @@
+{
+  "scenarios": [
+    {
+      "name": "a player sees their own sealed guess, nobody else's, and never the answer",
+      "members": {
+        "host": "admin",
+        "player": "adult"
+      },
+      "steps": [
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, 'open', 'everyone', ?, datetime('now'))",
+          "params": [
+            "ui-r1",
+            "Friday Night Trivia",
+            "{{host}}"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, 1, 0, ?, datetime('now'))",
+          "params": [
+            "ui-q1",
+            "ui-r1",
+            "What is the largest planet in our solar system?",
+            "Jupiter",
+            "{{host}}"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, 2, 1, ?, datetime('now'))",
+          "params": [
+            "ui-q2",
+            "ui-r1",
+            "In what year did the first person walk on the Moon?",
+            "1969",
+            "{{host}}"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))",
+          "params": [
+            "ui-g1a",
+            "ui-r1",
+            "ui-q1",
+            "{{player}}",
+            "Saturn, probably"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))",
+          "params": [
+            "ui-g1b",
+            "ui-r1",
+            "ui-q1",
+            "{{host}}",
+            "The big stripy one"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, 'draft', 'everyone', ?, datetime('now'))",
+          "params": [
+            "ui-r3",
+            "Half-written Round",
+            "{{host}}"
+          ]
+        },
+        {
+          "action": "open",
+          "as": "player"
+        },
+        {
+          "action": "waitFor",
+          "selector": "[data-testid=\"round-card\"][data-round-id=\"ui-r1\"]",
+          "as": "player"
+        },
+        {
+          "action": "expectCount",
+          "selector": "[data-testid=\"round-card\"][data-round-id=\"ui-r3\"]",
+          "count": 0,
+          "as": "player"
+        },
+        {
+          "action": "click",
+          "selector": "[data-testid=\"round-card\"][data-round-id=\"ui-r1\"]",
+          "as": "player"
+        },
+        {
+          "action": "waitFor",
+          "selector": "[data-testid=\"q-card\"][data-question-id=\"ui-q1\"]",
+          "as": "player"
+        },
+        {
+          "action": "expectVisible",
+          "selector": "[data-testid=\"q-card\"][data-question-id=\"ui-q1\"][data-mine=\"yes\"]",
+          "as": "player"
+        },
+        {
+          "action": "expectCount",
+          "selector": "[data-testid=\"guess-line\"]",
+          "count": 0,
+          "as": "player"
+        },
+        {
+          "action": "expectVisible",
+          "selector": "[data-question-id=\"ui-q1\"] [data-testid=\"my-guess\"]",
+          "as": "player"
+        },
+        {
+          "action": "seedRaw",
+          "sql": "UPDATE app_trivia_night__rounds SET status = 'closed' WHERE id = ?",
+          "params": [
+            "ui-r1"
+          ]
+        },
+        {
+          "action": "reload",
+          "as": "player"
+        },
+        {
+          "action": "waitFor",
+          "selector": "[data-testid=\"round-card\"][data-round-id=\"ui-r1\"]",
+          "as": "player"
+        },
+        {
+          "action": "click",
+          "selector": "[data-testid=\"round-card\"][data-round-id=\"ui-r1\"]",
+          "as": "player"
+        },
+        {
+          "action": "waitFor",
+          "selector": "[data-testid=\"q-card\"][data-question-id=\"ui-q1\"]",
+          "as": "player"
+        },
+        {
+          "action": "expectCount",
+          "selector": "[data-question-id=\"ui-q1\"] [data-testid=\"guess-line\"]",
+          "count": 2,
+          "as": "player"
+        },
+        {
+          "action": "expectNoText",
+          "text": "Jupiter",
+          "as": "player"
+        },
+        {
+          "action": "expectCount",
+          "selector": "[data-testid=\"host-answer\"]",
+          "count": 0,
+          "as": "player"
+        }
+      ]
+    },
+    {
+      "name": "the host reads the masked answer, is offered a grade for every guess, and is nudged only on the ungraded one",
+      "members": {
+        "host": "admin",
+        "player": "adult"
+      },
+      "steps": [
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, 'closed', 'everyone', ?, datetime('now'))",
+          "params": [
+            "ui-r2",
+            "Capitals Round",
+            "{{host}}"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, 2, 0, ?, datetime('now'))",
+          "params": [
+            "ui-q3",
+            "ui-r2",
+            "What is the capital of France?",
+            "Paris",
+            "{{host}}"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, 3, 1, ?, datetime('now'))",
+          "params": [
+            "ui-q4",
+            "ui-r2",
+            "What is the capital of Italy?",
+            "Rome",
+            "{{host}}"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))",
+          "params": [
+            "ui-g2a",
+            "ui-r2",
+            "ui-q3",
+            "{{player}}",
+            "Paris"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))",
+          "params": [
+            "ui-g2b",
+            "ui-r2",
+            "ui-q3",
+            "{{host}}",
+            "Lisbon"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))",
+          "params": [
+            "ui-g2c",
+            "ui-r2",
+            "ui-q4",
+            "{{player}}",
+            "Rome"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, 1, 3, ?, datetime('now'))",
+          "params": [
+            "ui-d1",
+            "ui-r2",
+            "ui-g2c",
+            "{{host}}"
+          ]
+        },
+        {
+          "action": "open",
+          "as": "host"
+        },
+        {
+          "action": "waitFor",
+          "selector": "[data-testid=\"round-card\"][data-round-id=\"ui-r2\"]",
+          "as": "host"
+        },
+        {
+          "action": "click",
+          "selector": "[data-testid=\"round-card\"][data-round-id=\"ui-r2\"]",
+          "as": "host"
+        },
+        {
+          "action": "waitFor",
+          "selector": "[data-testid=\"q-card\"][data-question-id=\"ui-q3\"]",
+          "as": "host"
+        },
+        {
+          "action": "expectText",
+          "selector": "[data-question-id=\"ui-q3\"] [data-testid=\"host-answer\"]",
+          "text": "Paris",
+          "as": "host"
+        },
+        {
+          "action": "expectCount",
+          "selector": "[data-question-id=\"ui-q4\"] [data-testid=\"looks-right\"]",
+          "count": 0,
+          "as": "host"
+        },
+        {
+          "action": "expectCount",
+          "selector": "[data-question-id=\"ui-q3\"] [data-testid=\"looks-right\"]",
+          "count": 1,
+          "as": "host"
+        },
+        {
+          "action": "expectCount",
+          "selector": "[data-testid=\"grade-yes\"]",
+          "count": 3,
+          "as": "host"
+        },
+        {
+          "action": "expectVisible",
+          "selector": "[data-testid=\"score-row\"][data-points=\"3\"]",
+          "as": "host"
+        },
+        {
+          "action": "expectCount",
+          "selector": "[data-testid=\"score-row\"]",
+          "count": 1,
+          "as": "host"
+        }
+      ]
+    }
+  ]
+}

@@ -389,7 +389,7 @@ function renderRoundList() {
     ${list.length ? `<div class="stack">${list.map((r) => {
       const qCount = roundQuestions(questions, r.id).length;
       return `
-      <button class="round-card" data-open="${esc(r.id)}">
+      <button class="round-card" data-testid="round-card" data-round-id="${esc(r.id)}" data-open="${esc(r.id)}">
         <div class="round-body">
           <div class="round-title">${esc(r.title)}</div>
           <div class="round-meta">Hosted by ${esc(memberName(r.created_by))} · ${qCount} question${qCount === 1 ? "" : "s"}</div>
@@ -404,11 +404,11 @@ function renderQuestionForPlayer(round, q) {
   const mine = guessFor(guesses, q.id, me?.id);
   if (round.status === "closed") return renderQuestionClosed(round, q);
   return `
-    <div class="q-card">
+    <div class="q-card" data-testid="q-card" data-question-id="${esc(q.id)}" data-mine="${mine ? "yes" : "no"}">
       <div class="q-points">${esc(String(Number(q.points) || 1))} pt${Number(q.points) === 1 ? "" : "s"}</div>
       <div class="q-prompt">${esc(q.prompt)}</div>
       ${mine
-        ? `<div class="sealed">🔒 Your guess is sealed: <strong>${esc(mine.guess_text)}</strong></div>`
+        ? `<div class="sealed" data-testid="my-guess">🔒 Your guess is sealed: <strong>${esc(mine.guess_text)}</strong></div>`
         : round.status === "open"
           ? `<form class="answer-row" data-guess-form="${esc(q.id)}">
                <input placeholder="Your guess…" maxlength="200" />
@@ -422,23 +422,24 @@ function renderQuestionClosed(round, q) {
   const qGuesses = guesses.filter((g) => g.question_id === q.id);
   const grades = gradingByGuess(gradings, round.id);
   const host = isHost(round, me);
+  const mine = guessFor(guesses, q.id, me?.id);
   return `
-    <div class="q-card">
+    <div class="q-card" data-testid="q-card" data-question-id="${esc(q.id)}" data-mine="${mine ? "yes" : "no"}">
       <div class="q-points">${esc(String(Number(q.points) || 1))} pt${Number(q.points) === 1 ? "" : "s"}</div>
       <div class="q-prompt">${esc(q.prompt)}</div>
-      ${q.revealed_answer ? `<div class="reveal-answer">Answer: ${esc(q.revealed_answer)}</div>` : host && q.correct_answer ? `<div class="sealed">Answer (only you see this until reveal): <strong>${esc(q.correct_answer)}</strong></div>` : ""}
+      ${q.revealed_answer ? `<div class="reveal-answer" data-testid="reveal-answer">Answer: ${esc(q.revealed_answer)}</div>` : host && q.correct_answer ? `<div class="sealed" data-testid="host-answer">Answer (only you see this until reveal): <strong>${esc(q.correct_answer)}</strong></div>` : ""}
       ${qGuesses.length ? qGuesses.map((g) => {
         const grade = grades.get(g.id);
         const suggest = host && !grade && q.correct_answer && looksCorrect(g.guess_text, q.correct_answer);
         return `
-          <div class="guess-line">
+          <div class="guess-line" data-testid="guess-line" data-guess-id="${esc(g.id)}">
             <span class="guess-who">${esc(memberName(g.member_id))}</span>
-            <span class="guess-what">${esc(g.guess_text)}${suggest ? ` <span class="tiny muted">(looks right)</span>` : ""}</span>
+            <span class="guess-what">${esc(g.guess_text)}${suggest ? ` <span class="tiny muted" data-testid="looks-right">(looks right)</span>` : ""}</span>
             ${grade ? `<span class="mark">${Number(grade.correct) ? "✅" : "❌"}</span>` : ""}
             ${host ? `
               <span class="grade-btns">
-                <button class="yes ${grade && Number(grade.correct) ? "sel" : ""}" data-grade-yes="${esc(g.id)}">✓</button>
-                <button class="no ${grade && !Number(grade.correct) ? "sel" : ""}" data-grade-no="${esc(g.id)}">✗</button>
+                <button class="yes ${grade && Number(grade.correct) ? "sel" : ""}" data-testid="grade-yes" data-grade-yes="${esc(g.id)}">✓</button>
+                <button class="no ${grade && !Number(grade.correct) ? "sel" : ""}" data-testid="grade-no" data-grade-no="${esc(g.id)}">✗</button>
               </span>` : ""}
           </div>`;
       }).join("") : `<div class="sealed">No guesses came in.</div>`}
@@ -471,7 +472,7 @@ function renderRound(round) {
       <div class="section-head"><h2>🏆 Scoreboard</h2></div>
       <div class="stack" style="margin-bottom:14px">
         ${scores.map((s, i) => `
-          <div class="score-row">
+          <div class="score-row" data-testid="score-row" data-points="${esc(String(s.points))}">
             <span class="score-rank">${i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1}</span>
             <span class="score-name">${esc(memberName(s.member_id))}</span>
             <span class="score-pts">${s.points} pts</span>
@@ -479,7 +480,7 @@ function renderRound(round) {
       </div>` : ""}
     ${qs.length
       ? `<div class="stack">${qs.map((q) => host && round.status === "draft" ? `
-          <div class="q-card">
+          <div class="q-card" data-testid="q-card" data-question-id="${esc(q.id)}">
             <div class="q-points">${esc(String(Number(q.points) || 1))} pts</div>
             <div class="q-prompt">${esc(q.prompt)}</div>
             <div class="sealed">Answer: <strong>${esc(q.correct_answer ?? "")}</strong><button class="btn btn-ghost btn-sm" data-delete-question="${esc(q.id)}" style="margin-left:8px">Remove</button></div>
