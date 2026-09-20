@@ -1,5 +1,7 @@
 # Trivia Night
 
+A [Chickadee Bandit](https://chickadeebandit.com/app-library/trivia-night) app.
+
 Host a family trivia round: write questions with hidden answers, everyone
 submits sealed guesses, then close the round to reveal, grade, and crown a
 winner.
