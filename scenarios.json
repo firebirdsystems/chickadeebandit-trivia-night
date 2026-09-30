@@ -92,6 +92,71 @@
           "expect": { "status": 200 }
         }
       ]
+    },
+    {
+      "name": "a child player never sees the correct answer, their guess is stamped as the child, and they cannot add questions, grade, or close the round",
+      "members": { "kid": "child", "parent": "adult" },
+      "steps": [
+        {
+          "action": "db",
+          "as": "parent",
+          "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES ('round-1', 'Family trivia', 'open', 'everyone', ?, '2099-01-01T00:00:00Z')",
+          "params": ["{{parent}}"],
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "parent",
+          "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES ('q-1', 'round-1', 'Capital of France?', 'Paris', '', 1, 0, ?, '2099-01-01T00:01:00Z')",
+          "params": ["{{parent}}"],
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "kid",
+          "sql": "SELECT id, correct_answer FROM app_trivia_night__questions",
+          "expect": { "status": 200, "rowCount": 1, "rowsContain": [{ "id": "q-1", "correct_answer": null }] }
+        },
+        {
+          "action": "db",
+          "as": "kid",
+          "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES ('q-kid', 'round-1', 'My question', 'x', '', 10, 1, ?, '2099-01-01T00:02:00Z')",
+          "params": ["{{kid}}"],
+          "expect": { "status": 403 }
+        },
+        {
+          "action": "db",
+          "as": "kid",
+          "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES ('g-kid', 'round-1', 'q-1', ?, 'Paris', '2099-01-01T00:03:00Z')",
+          "params": ["{{parent}}"],
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "kid",
+          "sql": "SELECT id, member_id FROM app_trivia_night__guesses",
+          "expect": { "status": 200, "rowCount": 1, "rowsContain": [{ "id": "g-kid", "member_id": "scn-kid" }] }
+        },
+        {
+          "action": "db",
+          "as": "kid",
+          "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES ('gr-kid', 'round-1', 'g-kid', 1, 99, ?, '2099-01-01T00:04:00Z')",
+          "params": ["{{kid}}"],
+          "expect": { "status": 403 }
+        },
+        {
+          "action": "db",
+          "as": "kid",
+          "sql": "UPDATE app_trivia_night__rounds SET status = 'closed' WHERE id = 'round-1'",
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "parent",
+          "sql": "SELECT id, status FROM app_trivia_night__rounds WHERE id = 'round-1'",
+          "expect": { "status": 200, "rowsContain": [{ "id": "round-1", "status": "open" }] }
+        }
+      ]
     }
   ]
 }
