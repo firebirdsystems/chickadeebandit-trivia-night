@@ -122,7 +122,7 @@
 </div>
 
 <script type="module">
-import { esc, hubConfirm, hubAlert, searchMatch } from "/hub-sdk.js";
+import { esc, hubConfirm, hubAlert, searchMatch, glyph } from "/hub-sdk.js";
 import {
   isHost, statusLabel, visibleRounds, roundQuestions, guessFor,
   answeredCount, scoreboard, gradingByGuess, looksCorrect, searchableFields,
@@ -379,7 +379,7 @@ function renderRoundList() {
   return `
     <div class="topbar">
       <div>
-        <h1>🧠 Trivia Night</h1>
+        <h1>${glyph("lightbulb")} Trivia Night</h1>
         <p class="muted tiny">Sealed guesses. No cheating possible — the hub keeps answers hidden.</p>
       </div>
       <button class="btn" data-new-round>+ New round</button>
@@ -408,7 +408,7 @@ function renderQuestionForPlayer(round, q) {
       <div class="q-points">${esc(String(Number(q.points) || 1))} pt${Number(q.points) === 1 ? "" : "s"}</div>
       <div class="q-prompt">${esc(q.prompt)}</div>
       ${mine
-        ? `<div class="sealed" data-testid="my-guess">🔒 Your guess is sealed: <strong>${esc(mine.guess_text)}</strong></div>`
+        ? `<div class="sealed" data-testid="my-guess">${glyph("lock")} Your guess is sealed: <strong>${esc(mine.guess_text)}</strong></div>`
         : round.status === "open"
           ? `<form class="answer-row" data-guess-form="${esc(q.id)}">
                <input placeholder="Your guess…" maxlength="200" />
@@ -435,11 +435,11 @@ function renderQuestionClosed(round, q) {
           <div class="guess-line" data-testid="guess-line" data-guess-id="${esc(g.id)}">
             <span class="guess-who">${esc(memberName(g.member_id))}</span>
             <span class="guess-what">${esc(g.guess_text)}${suggest ? ` <span class="tiny muted" data-testid="looks-right">(looks right)</span>` : ""}</span>
-            ${grade ? `<span class="mark">${Number(grade.correct) ? "✅" : "❌"}</span>` : ""}
+            ${grade ? `<span class="mark">${Number(grade.correct) ? glyph("tick") : glyph("close")}</span>` : ""}
             ${host ? `
               <span class="grade-btns">
-                <button class="yes ${grade && Number(grade.correct) ? "sel" : ""}" data-testid="grade-yes" data-grade-yes="${esc(g.id)}">✓</button>
-                <button class="no ${grade && !Number(grade.correct) ? "sel" : ""}" data-testid="grade-no" data-grade-no="${esc(g.id)}">✗</button>
+                <button class="yes ${grade && Number(grade.correct) ? "sel" : ""}" data-testid="grade-yes" data-grade-yes="${esc(g.id)}" aria-label="Correct">${glyph("tick", { accent: "currentColor" })}</button>
+                <button class="no ${grade && !Number(grade.correct) ? "sel" : ""}" data-testid="grade-no" data-grade-no="${esc(g.id)}" aria-label="Wrong">${glyph("close", { accent: "currentColor" })}</button>
               </span>` : ""}
           </div>`;
       }).join("") : `<div class="sealed">No guesses came in.</div>`}
@@ -469,7 +469,7 @@ function renderRound(round) {
     </div>
     ${error ? `<div class="error">${esc(error)}</div>` : ""}
     ${round.status === "closed" && scores.length ? `
-      <div class="section-head"><h2>🏆 Scoreboard</h2></div>
+      <div class="section-head"><h2>${glyph("trophy")} Scoreboard</h2></div>
       <div class="stack" style="margin-bottom:14px">
         ${scores.map((s, i) => `
           <div class="score-row" data-testid="score-row" data-points="${esc(String(s.points))}">
