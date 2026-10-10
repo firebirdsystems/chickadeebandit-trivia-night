@@ -1,0 +1,2014 @@
+{
+  "seed": [
+    {
+      "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+0 minutes'))",
+      "params": [
+        "perf-rd-01",
+        "Friday Night Trivia #12",
+        "open",
+        "everyone",
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+1 minutes'))",
+      "params": [
+        "perf-tq-001",
+        "perf-rd-01",
+        "What is the largest planet in our solar system?",
+        "Jupiter",
+        1,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-3 minutes'))",
+      "params": [
+        "perf-tg-001",
+        "perf-rd-01",
+        "perf-tq-001",
+        "{{partner}}",
+        "Jupiter"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-3 minutes'))",
+      "params": [
+        "perf-tg-002",
+        "perf-rd-01",
+        "perf-tq-001",
+        "{{child}}",
+        "Saturn, probably"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+2 minutes'))",
+      "params": [
+        "perf-tq-002",
+        "perf-rd-01",
+        "In what year did the first person walk on the Moon?",
+        "1969",
+        2,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-3 minutes'))",
+      "params": [
+        "perf-tg-003",
+        "perf-rd-01",
+        "perf-tq-002",
+        "{{partner}}",
+        "1968"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-3 minutes'))",
+      "params": [
+        "perf-tg-004",
+        "perf-rd-01",
+        "perf-tq-002",
+        "{{child}}",
+        "Nineteen sixty-something"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+3 minutes'))",
+      "params": [
+        "perf-tq-003",
+        "perf-rd-01",
+        "Which ocean is the deepest?",
+        "Pacific",
+        3,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-3 minutes'))",
+      "params": [
+        "perf-tg-005",
+        "perf-rd-01",
+        "perf-tq-003",
+        "{{partner}}",
+        "The Pacific"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-3 minutes'))",
+      "params": [
+        "perf-tg-006",
+        "perf-rd-01",
+        "perf-tq-003",
+        "{{child}}",
+        "Pacific"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+4 minutes'))",
+      "params": [
+        "perf-tq-004",
+        "perf-rd-01",
+        "How many strings does a standard violin have?",
+        "4",
+        1,
+        3,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-3 minutes'))",
+      "params": [
+        "perf-tg-007",
+        "perf-rd-01",
+        "perf-tq-004",
+        "{{partner}}",
+        "4"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-3 minutes'))",
+      "params": [
+        "perf-tg-008",
+        "perf-rd-01",
+        "perf-tq-004",
+        "{{child}}",
+        "Six"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','-5 minutes'))",
+      "params": [
+        "perf-rd-02",
+        "Road Trip Quiz",
+        "open",
+        "everyone",
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','-4 minutes'))",
+      "params": [
+        "perf-tq-005",
+        "perf-rd-02",
+        "What is the capital of Australia?",
+        "Canberra",
+        1,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+30 minutes'))",
+      "params": [
+        "perf-tg-009",
+        "perf-rd-02",
+        "perf-tq-005",
+        "{{me}}",
+        "Canberra"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+33 minutes'))",
+      "params": [
+        "perf-tg-010",
+        "perf-rd-02",
+        "perf-tq-005",
+        "{{child}}",
+        "Melbourne"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+36 minutes'))",
+      "params": [
+        "perf-tg-011",
+        "perf-rd-02",
+        "perf-tq-005",
+        "{{adult2}}",
+        "Sydney"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','-3 minutes'))",
+      "params": [
+        "perf-tq-006",
+        "perf-rd-02",
+        "Which animal is the fastest on land?",
+        "Cheetah",
+        2,
+        1,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+31 minutes'))",
+      "params": [
+        "perf-tg-012",
+        "perf-rd-02",
+        "perf-tq-006",
+        "{{me}}",
+        "cheetah"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+34 minutes'))",
+      "params": [
+        "perf-tg-013",
+        "perf-rd-02",
+        "perf-tq-006",
+        "{{child}}",
+        "Cheetah"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+37 minutes'))",
+      "params": [
+        "perf-tg-014",
+        "perf-rd-02",
+        "perf-tq-006",
+        "{{adult2}}",
+        "Lion"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','-2 minutes'))",
+      "params": [
+        "perf-tq-007",
+        "perf-rd-02",
+        "What gas do plants take in from the air?",
+        "Carbon dioxide",
+        3,
+        2,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+35 minutes'))",
+      "params": [
+        "perf-tg-015",
+        "perf-rd-02",
+        "perf-tq-007",
+        "{{child}}",
+        "Carbon dioxide"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+38 minutes'))",
+      "params": [
+        "perf-tg-016",
+        "perf-rd-02",
+        "perf-tq-007",
+        "{{adult2}}",
+        "CO2"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','-1 minutes'))",
+      "params": [
+        "perf-tq-008",
+        "perf-rd-02",
+        "Who painted the Mona Lisa?",
+        "Leonardo da Vinci",
+        1,
+        3,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+36 minutes'))",
+      "params": [
+        "perf-tg-017",
+        "perf-rd-02",
+        "perf-tq-008",
+        "{{child}}",
+        "Da Vinci"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','+39 minutes'))",
+      "params": [
+        "perf-tg-018",
+        "perf-rd-02",
+        "perf-tq-008",
+        "{{adult2}}",
+        "Leonardo da Vinci"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-3 days','-10 minutes'))",
+      "params": [
+        "perf-rd-03",
+        "Neighbourhood Brain Teasers",
+        "open",
+        "everyone",
+        "{{adult2}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-3 days','-9 minutes'))",
+      "params": [
+        "perf-tq-009",
+        "perf-rd-03",
+        "How many sides does a hexagon have?",
+        "6",
+        1,
+        0,
+        "{{adult2}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','+30 minutes'))",
+      "params": [
+        "perf-tg-019",
+        "perf-rd-03",
+        "perf-tq-009",
+        "{{child2}}",
+        "Six"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-3 days','-8 minutes'))",
+      "params": [
+        "perf-tq-010",
+        "perf-rd-03",
+        "Which country gifted the Statue of Liberty?",
+        "France",
+        2,
+        1,
+        "{{adult2}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','+31 minutes'))",
+      "params": [
+        "perf-tg-020",
+        "perf-rd-03",
+        "perf-tq-010",
+        "{{child2}}",
+        "France"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-3 days','-7 minutes'))",
+      "params": [
+        "perf-tq-011",
+        "perf-rd-03",
+        "What is the hardest natural substance?",
+        "Diamond",
+        3,
+        2,
+        "{{adult2}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','+32 minutes'))",
+      "params": [
+        "perf-tg-021",
+        "perf-rd-03",
+        "perf-tq-011",
+        "{{child2}}",
+        "Steel"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-3 days','-6 minutes'))",
+      "params": [
+        "perf-tq-012",
+        "perf-rd-03",
+        "Which planet is known as the Red Planet?",
+        "Mars",
+        1,
+        3,
+        "{{adult2}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','+33 minutes'))",
+      "params": [
+        "perf-tg-022",
+        "perf-rd-03",
+        "perf-tq-012",
+        "{{child2}}",
+        "Mars"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-15 minutes'))",
+      "params": [
+        "perf-rd-04",
+        "Half-written Round",
+        "draft",
+        "everyone",
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-14 minutes'))",
+      "params": [
+        "perf-tq-013",
+        "perf-rd-04",
+        "What is the tallest mountain on Earth?",
+        "Mount Everest",
+        1,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-13 minutes'))",
+      "params": [
+        "perf-tq-014",
+        "perf-rd-04",
+        "How many players are on a soccer team on the field?",
+        "11",
+        2,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+0 days','-12 minutes'))",
+      "params": [
+        "perf-tq-015",
+        "perf-rd-04",
+        "What is the smallest prime number?",
+        "2",
+        3,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-8 days','-20 minutes'))",
+      "params": [
+        "perf-rd-05",
+        "Friday Night Trivia #11",
+        "closed",
+        "everyone",
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-8 days','-19 minutes'))",
+      "params": [
+        "perf-tq-016",
+        "perf-rd-05",
+        "What is frozen water called?",
+        "Ice",
+        "Ice",
+        1,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+30 minutes'))",
+      "params": [
+        "perf-tg-023",
+        "perf-rd-05",
+        "perf-tq-016",
+        "{{partner}}",
+        "Snow"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+0 minutes'))",
+      "params": [
+        "perf-gr-023",
+        "perf-rd-05",
+        "perf-tg-023",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+33 minutes'))",
+      "params": [
+        "perf-tg-024",
+        "perf-rd-05",
+        "perf-tq-016",
+        "{{child}}",
+        "ice"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+0 minutes'))",
+      "params": [
+        "perf-gr-024",
+        "perf-rd-05",
+        "perf-tg-024",
+        1,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+36 minutes'))",
+      "params": [
+        "perf-tg-025",
+        "perf-rd-05",
+        "perf-tq-016",
+        "{{child2}}",
+        "Ice"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+0 minutes'))",
+      "params": [
+        "perf-gr-025",
+        "perf-rd-05",
+        "perf-tg-025",
+        1,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-8 days','-18 minutes'))",
+      "params": [
+        "perf-tq-017",
+        "perf-rd-05",
+        "Which instrument has 88 keys?",
+        "Piano",
+        "Piano",
+        2,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+31 minutes'))",
+      "params": [
+        "perf-tg-026",
+        "perf-rd-05",
+        "perf-tq-017",
+        "{{partner}}",
+        "A piano"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+1 minutes'))",
+      "params": [
+        "perf-gr-026",
+        "perf-rd-05",
+        "perf-tg-026",
+        1,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+34 minutes'))",
+      "params": [
+        "perf-tg-027",
+        "perf-rd-05",
+        "perf-tq-017",
+        "{{child}}",
+        "Piano"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+1 minutes'))",
+      "params": [
+        "perf-gr-027",
+        "perf-rd-05",
+        "perf-tg-027",
+        1,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+37 minutes'))",
+      "params": [
+        "perf-tg-028",
+        "perf-rd-05",
+        "perf-tq-017",
+        "{{child2}}",
+        "Organ"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+1 minutes'))",
+      "params": [
+        "perf-gr-028",
+        "perf-rd-05",
+        "perf-tg-028",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-8 days','-17 minutes'))",
+      "params": [
+        "perf-tq-018",
+        "perf-rd-05",
+        "What do bees make?",
+        "Honey",
+        "Honey",
+        3,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+32 minutes'))",
+      "params": [
+        "perf-tg-029",
+        "perf-rd-05",
+        "perf-tq-018",
+        "{{partner}}",
+        "Honey"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+2 minutes'))",
+      "params": [
+        "perf-gr-029",
+        "perf-rd-05",
+        "perf-tg-029",
+        1,
+        3,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+35 minutes'))",
+      "params": [
+        "perf-tg-030",
+        "perf-rd-05",
+        "perf-tq-018",
+        "{{child}}",
+        "Wax"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+2 minutes'))",
+      "params": [
+        "perf-gr-030",
+        "perf-rd-05",
+        "perf-tg-030",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+38 minutes'))",
+      "params": [
+        "perf-tg-031",
+        "perf-rd-05",
+        "perf-tq-018",
+        "{{child2}}",
+        "honey"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+2 minutes'))",
+      "params": [
+        "perf-gr-031",
+        "perf-rd-05",
+        "perf-tg-031",
+        1,
+        3,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-8 days','-16 minutes'))",
+      "params": [
+        "perf-tq-019",
+        "perf-rd-05",
+        "Which month has the fewest days?",
+        "February",
+        "February",
+        1,
+        3,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+33 minutes'))",
+      "params": [
+        "perf-tg-032",
+        "perf-rd-05",
+        "perf-tq-019",
+        "{{partner}}",
+        "Feb"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+3 minutes'))",
+      "params": [
+        "perf-gr-032",
+        "perf-rd-05",
+        "perf-tg-032",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+36 minutes'))",
+      "params": [
+        "perf-tg-033",
+        "perf-rd-05",
+        "perf-tq-019",
+        "{{child}}",
+        "June"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+3 minutes'))",
+      "params": [
+        "perf-gr-033",
+        "perf-rd-05",
+        "perf-tg-033",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-7 days','+39 minutes'))",
+      "params": [
+        "perf-tg-034",
+        "perf-rd-05",
+        "perf-tq-019",
+        "{{child2}}",
+        "February"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','+3 minutes'))",
+      "params": [
+        "perf-gr-034",
+        "perf-rd-05",
+        "perf-tg-034",
+        1,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-15 days','-25 minutes'))",
+      "params": [
+        "perf-rd-06",
+        "Space and Science Special",
+        "closed",
+        "everyone",
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-15 days','-24 minutes'))",
+      "params": [
+        "perf-tq-020",
+        "perf-rd-06",
+        "What is the largest planet in our solar system?",
+        "Jupiter",
+        "Jupiter",
+        1,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+30 minutes'))",
+      "params": [
+        "perf-tg-035",
+        "perf-rd-06",
+        "perf-tq-020",
+        "{{me}}",
+        "The big stripy one"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+0 minutes'))",
+      "params": [
+        "perf-gr-035",
+        "perf-rd-06",
+        "perf-tg-035",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+33 minutes'))",
+      "params": [
+        "perf-tg-036",
+        "perf-rd-06",
+        "perf-tq-020",
+        "{{child}}",
+        "Jupiter"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+0 minutes'))",
+      "params": [
+        "perf-gr-036",
+        "perf-rd-06",
+        "perf-tg-036",
+        1,
+        1,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+36 minutes'))",
+      "params": [
+        "perf-tg-037",
+        "perf-rd-06",
+        "perf-tq-020",
+        "{{adult2}}",
+        "Saturn, probably"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+0 minutes'))",
+      "params": [
+        "perf-gr-037",
+        "perf-rd-06",
+        "perf-tg-037",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-15 days','-23 minutes'))",
+      "params": [
+        "perf-tq-021",
+        "perf-rd-06",
+        "In what year did the first person walk on the Moon?",
+        "1969",
+        "1969",
+        2,
+        1,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+31 minutes'))",
+      "params": [
+        "perf-tg-038",
+        "perf-rd-06",
+        "perf-tq-021",
+        "{{me}}",
+        "1969"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+1 minutes'))",
+      "params": [
+        "perf-gr-038",
+        "perf-rd-06",
+        "perf-tg-038",
+        1,
+        2,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+34 minutes'))",
+      "params": [
+        "perf-tg-039",
+        "perf-rd-06",
+        "perf-tq-021",
+        "{{child}}",
+        "1968"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+1 minutes'))",
+      "params": [
+        "perf-gr-039",
+        "perf-rd-06",
+        "perf-tg-039",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+37 minutes'))",
+      "params": [
+        "perf-tg-040",
+        "perf-rd-06",
+        "perf-tq-021",
+        "{{adult2}}",
+        "Nineteen sixty-something"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+1 minutes'))",
+      "params": [
+        "perf-gr-040",
+        "perf-rd-06",
+        "perf-tg-040",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-15 days','-22 minutes'))",
+      "params": [
+        "perf-tq-022",
+        "perf-rd-06",
+        "Which ocean is the deepest?",
+        "Pacific",
+        "Pacific",
+        3,
+        2,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+32 minutes'))",
+      "params": [
+        "perf-tg-041",
+        "perf-rd-06",
+        "perf-tq-022",
+        "{{me}}",
+        "Atlantic"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+2 minutes'))",
+      "params": [
+        "perf-gr-041",
+        "perf-rd-06",
+        "perf-tg-041",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+35 minutes'))",
+      "params": [
+        "perf-tg-042",
+        "perf-rd-06",
+        "perf-tq-022",
+        "{{child}}",
+        "The Pacific"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+2 minutes'))",
+      "params": [
+        "perf-gr-042",
+        "perf-rd-06",
+        "perf-tg-042",
+        1,
+        3,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+38 minutes'))",
+      "params": [
+        "perf-tg-043",
+        "perf-rd-06",
+        "perf-tq-022",
+        "{{adult2}}",
+        "Pacific"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+2 minutes'))",
+      "params": [
+        "perf-gr-043",
+        "perf-rd-06",
+        "perf-tg-043",
+        1,
+        3,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-15 days','-21 minutes'))",
+      "params": [
+        "perf-tq-023",
+        "perf-rd-06",
+        "How many strings does a standard violin have?",
+        "4",
+        "4",
+        1,
+        3,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+33 minutes'))",
+      "params": [
+        "perf-tg-044",
+        "perf-rd-06",
+        "perf-tq-023",
+        "{{me}}",
+        "Four"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+3 minutes'))",
+      "params": [
+        "perf-gr-044",
+        "perf-rd-06",
+        "perf-tg-044",
+        1,
+        1,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+36 minutes'))",
+      "params": [
+        "perf-tg-045",
+        "perf-rd-06",
+        "perf-tq-023",
+        "{{child}}",
+        "4"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+3 minutes'))",
+      "params": [
+        "perf-gr-045",
+        "perf-rd-06",
+        "perf-tg-045",
+        1,
+        1,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','+39 minutes'))",
+      "params": [
+        "perf-tg-046",
+        "perf-rd-06",
+        "perf-tq-023",
+        "{{adult2}}",
+        "Six"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','+3 minutes'))",
+      "params": [
+        "perf-gr-046",
+        "perf-rd-06",
+        "perf-tg-046",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-22 days','-30 minutes'))",
+      "params": [
+        "perf-rd-07",
+        "Friday Night Trivia #10",
+        "closed",
+        "everyone",
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-22 days','-29 minutes'))",
+      "params": [
+        "perf-tq-024",
+        "perf-rd-07",
+        "What is the capital of Australia?",
+        "Canberra",
+        "Canberra",
+        1,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+30 minutes'))",
+      "params": [
+        "perf-tg-047",
+        "perf-rd-07",
+        "perf-tq-024",
+        "{{partner}}",
+        "Sydney"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+0 minutes'))",
+      "params": [
+        "perf-gr-047",
+        "perf-rd-07",
+        "perf-tg-047",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+33 minutes'))",
+      "params": [
+        "perf-tg-048",
+        "perf-rd-07",
+        "perf-tq-024",
+        "{{child}}",
+        "Canberra"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+0 minutes'))",
+      "params": [
+        "perf-gr-048",
+        "perf-rd-07",
+        "perf-tg-048",
+        1,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+36 minutes'))",
+      "params": [
+        "perf-tg-049",
+        "perf-rd-07",
+        "perf-tq-024",
+        "{{child2}}",
+        "Melbourne"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+0 minutes'))",
+      "params": [
+        "perf-gr-049",
+        "perf-rd-07",
+        "perf-tg-049",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-22 days','-28 minutes'))",
+      "params": [
+        "perf-tq-025",
+        "perf-rd-07",
+        "Which animal is the fastest on land?",
+        "Cheetah",
+        "Cheetah",
+        2,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+31 minutes'))",
+      "params": [
+        "perf-tg-050",
+        "perf-rd-07",
+        "perf-tq-025",
+        "{{partner}}",
+        "Lion"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+1 minutes'))",
+      "params": [
+        "perf-gr-050",
+        "perf-rd-07",
+        "perf-tg-050",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+34 minutes'))",
+      "params": [
+        "perf-tg-051",
+        "perf-rd-07",
+        "perf-tq-025",
+        "{{child}}",
+        "cheetah"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+1 minutes'))",
+      "params": [
+        "perf-gr-051",
+        "perf-rd-07",
+        "perf-tg-051",
+        1,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+37 minutes'))",
+      "params": [
+        "perf-tg-052",
+        "perf-rd-07",
+        "perf-tq-025",
+        "{{child2}}",
+        "Cheetah"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+1 minutes'))",
+      "params": [
+        "perf-gr-052",
+        "perf-rd-07",
+        "perf-tg-052",
+        1,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-22 days','-27 minutes'))",
+      "params": [
+        "perf-tq-026",
+        "perf-rd-07",
+        "What gas do plants take in from the air?",
+        "Carbon dioxide",
+        "Carbon dioxide",
+        3,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+32 minutes'))",
+      "params": [
+        "perf-tg-053",
+        "perf-rd-07",
+        "perf-tq-026",
+        "{{partner}}",
+        "CO2"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+2 minutes'))",
+      "params": [
+        "perf-gr-053",
+        "perf-rd-07",
+        "perf-tg-053",
+        1,
+        3,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+35 minutes'))",
+      "params": [
+        "perf-tg-054",
+        "perf-rd-07",
+        "perf-tq-026",
+        "{{child}}",
+        "Oxygen"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+2 minutes'))",
+      "params": [
+        "perf-gr-054",
+        "perf-rd-07",
+        "perf-tg-054",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+38 minutes'))",
+      "params": [
+        "perf-tg-055",
+        "perf-rd-07",
+        "perf-tq-026",
+        "{{child2}}",
+        "Carbon dioxide"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+2 minutes'))",
+      "params": [
+        "perf-gr-055",
+        "perf-rd-07",
+        "perf-tg-055",
+        1,
+        3,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-22 days','-26 minutes'))",
+      "params": [
+        "perf-tq-027",
+        "perf-rd-07",
+        "Who painted the Mona Lisa?",
+        "Leonardo da Vinci",
+        "Leonardo da Vinci",
+        1,
+        3,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+33 minutes'))",
+      "params": [
+        "perf-tg-056",
+        "perf-rd-07",
+        "perf-tq-027",
+        "{{partner}}",
+        "Leonardo da Vinci"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+3 minutes'))",
+      "params": [
+        "perf-gr-056",
+        "perf-rd-07",
+        "perf-tg-056",
+        1,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+36 minutes'))",
+      "params": [
+        "perf-tg-057",
+        "perf-rd-07",
+        "perf-tq-027",
+        "{{child}}",
+        "Michelangelo"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+3 minutes'))",
+      "params": [
+        "perf-gr-057",
+        "perf-rd-07",
+        "perf-tg-057",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','+39 minutes'))",
+      "params": [
+        "perf-tg-058",
+        "perf-rd-07",
+        "perf-tq-027",
+        "{{child2}}",
+        "Da Vinci"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','+3 minutes'))",
+      "params": [
+        "perf-gr-058",
+        "perf-rd-07",
+        "perf-tg-058",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-36 days','-35 minutes'))",
+      "params": [
+        "perf-rd-08",
+        "Animals and Nature",
+        "closed",
+        "everyone",
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-36 days','-34 minutes'))",
+      "params": [
+        "perf-tq-028",
+        "perf-rd-08",
+        "How many sides does a hexagon have?",
+        "6",
+        "6",
+        1,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+30 minutes'))",
+      "params": [
+        "perf-tg-059",
+        "perf-rd-08",
+        "perf-tq-028",
+        "{{me}}",
+        "Eight"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+0 minutes'))",
+      "params": [
+        "perf-gr-059",
+        "perf-rd-08",
+        "perf-tg-059",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+33 minutes'))",
+      "params": [
+        "perf-tg-060",
+        "perf-rd-08",
+        "perf-tq-028",
+        "{{child2}}",
+        "Six"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+0 minutes'))",
+      "params": [
+        "perf-gr-060",
+        "perf-rd-08",
+        "perf-tg-060",
+        1,
+        1,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+36 minutes'))",
+      "params": [
+        "perf-tg-061",
+        "perf-rd-08",
+        "perf-tq-028",
+        "{{adult2}}",
+        "6"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+0 minutes'))",
+      "params": [
+        "perf-gr-061",
+        "perf-rd-08",
+        "perf-tg-061",
+        1,
+        1,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-36 days','-33 minutes'))",
+      "params": [
+        "perf-tq-029",
+        "perf-rd-08",
+        "Which country gifted the Statue of Liberty?",
+        "France",
+        "France",
+        2,
+        1,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+31 minutes'))",
+      "params": [
+        "perf-tg-062",
+        "perf-rd-08",
+        "perf-tq-029",
+        "{{me}}",
+        "Spain"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+1 minutes'))",
+      "params": [
+        "perf-gr-062",
+        "perf-rd-08",
+        "perf-tg-062",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+34 minutes'))",
+      "params": [
+        "perf-tg-063",
+        "perf-rd-08",
+        "perf-tq-029",
+        "{{child2}}",
+        "France"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+1 minutes'))",
+      "params": [
+        "perf-gr-063",
+        "perf-rd-08",
+        "perf-tg-063",
+        1,
+        2,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+37 minutes'))",
+      "params": [
+        "perf-tg-064",
+        "perf-rd-08",
+        "perf-tq-029",
+        "{{adult2}}",
+        "England"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+1 minutes'))",
+      "params": [
+        "perf-gr-064",
+        "perf-rd-08",
+        "perf-tg-064",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-36 days','-32 minutes'))",
+      "params": [
+        "perf-tq-030",
+        "perf-rd-08",
+        "What is the hardest natural substance?",
+        "Diamond",
+        "Diamond",
+        3,
+        2,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+32 minutes'))",
+      "params": [
+        "perf-tg-065",
+        "perf-rd-08",
+        "perf-tq-030",
+        "{{me}}",
+        "Diamond"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+2 minutes'))",
+      "params": [
+        "perf-gr-065",
+        "perf-rd-08",
+        "perf-tg-065",
+        1,
+        3,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+35 minutes'))",
+      "params": [
+        "perf-tg-066",
+        "perf-rd-08",
+        "perf-tq-030",
+        "{{child2}}",
+        "Steel"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+2 minutes'))",
+      "params": [
+        "perf-gr-066",
+        "perf-rd-08",
+        "perf-tg-066",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+38 minutes'))",
+      "params": [
+        "perf-tg-067",
+        "perf-rd-08",
+        "perf-tq-030",
+        "{{adult2}}",
+        "Granite"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+2 minutes'))",
+      "params": [
+        "perf-gr-067",
+        "perf-rd-08",
+        "perf-tg-067",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-36 days','-31 minutes'))",
+      "params": [
+        "perf-tq-031",
+        "perf-rd-08",
+        "Which planet is known as the Red Planet?",
+        "Mars",
+        "Mars",
+        1,
+        3,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+33 minutes'))",
+      "params": [
+        "perf-tg-068",
+        "perf-rd-08",
+        "perf-tq-031",
+        "{{me}}",
+        "Venus"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+3 minutes'))",
+      "params": [
+        "perf-gr-068",
+        "perf-rd-08",
+        "perf-tg-068",
+        0,
+        0,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+36 minutes'))",
+      "params": [
+        "perf-tg-069",
+        "perf-rd-08",
+        "perf-tq-031",
+        "{{child2}}",
+        "Mars"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+3 minutes'))",
+      "params": [
+        "perf-gr-069",
+        "perf-rd-08",
+        "perf-tg-069",
+        1,
+        1,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','+39 minutes'))",
+      "params": [
+        "perf-tg-070",
+        "perf-rd-08",
+        "perf-tq-031",
+        "{{adult2}}",
+        "Mars"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-34 days','+3 minutes'))",
+      "params": [
+        "perf-gr-070",
+        "perf-rd-08",
+        "perf-tg-070",
+        1,
+        1,
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-50 days','-40 minutes'))",
+      "params": [
+        "perf-rd-09",
+        "Friday Night Trivia #9",
+        "closed",
+        "everyone",
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-50 days','-39 minutes'))",
+      "params": [
+        "perf-tq-032",
+        "perf-rd-09",
+        "What is the tallest mountain on Earth?",
+        "Mount Everest",
+        "Mount Everest",
+        1,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+30 minutes'))",
+      "params": [
+        "perf-tg-071",
+        "perf-rd-09",
+        "perf-tq-032",
+        "{{partner}}",
+        "Mount Everest"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+0 minutes'))",
+      "params": [
+        "perf-gr-071",
+        "perf-rd-09",
+        "perf-tg-071",
+        1,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+33 minutes'))",
+      "params": [
+        "perf-tg-072",
+        "perf-rd-09",
+        "perf-tq-032",
+        "{{adult2}}",
+        "Everest"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+0 minutes'))",
+      "params": [
+        "perf-gr-072",
+        "perf-rd-09",
+        "perf-tg-072",
+        1,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+36 minutes'))",
+      "params": [
+        "perf-tg-073",
+        "perf-rd-09",
+        "perf-tq-032",
+        "{{child}}",
+        "K2"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+0 minutes'))",
+      "params": [
+        "perf-gr-073",
+        "perf-rd-09",
+        "perf-tg-073",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-50 days','-38 minutes'))",
+      "params": [
+        "perf-tq-033",
+        "perf-rd-09",
+        "How many players are on a soccer team on the field?",
+        "11",
+        "11",
+        2,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+31 minutes'))",
+      "params": [
+        "perf-tg-074",
+        "perf-rd-09",
+        "perf-tq-033",
+        "{{partner}}",
+        "11"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+1 minutes'))",
+      "params": [
+        "perf-gr-074",
+        "perf-rd-09",
+        "perf-tg-074",
+        1,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+34 minutes'))",
+      "params": [
+        "perf-tg-075",
+        "perf-rd-09",
+        "perf-tq-033",
+        "{{adult2}}",
+        "Ten"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+1 minutes'))",
+      "params": [
+        "perf-gr-075",
+        "perf-rd-09",
+        "perf-tg-075",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+37 minutes'))",
+      "params": [
+        "perf-tg-076",
+        "perf-rd-09",
+        "perf-tq-033",
+        "{{child}}",
+        "Eleven"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+1 minutes'))",
+      "params": [
+        "perf-gr-076",
+        "perf-rd-09",
+        "perf-tg-076",
+        1,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-50 days','-37 minutes'))",
+      "params": [
+        "perf-tq-034",
+        "perf-rd-09",
+        "What is the smallest prime number?",
+        "2",
+        "2",
+        3,
+        2,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+32 minutes'))",
+      "params": [
+        "perf-tg-077",
+        "perf-rd-09",
+        "perf-tq-034",
+        "{{partner}}",
+        "2"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+2 minutes'))",
+      "params": [
+        "perf-gr-077",
+        "perf-rd-09",
+        "perf-tg-077",
+        1,
+        3,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+35 minutes'))",
+      "params": [
+        "perf-tg-078",
+        "perf-rd-09",
+        "perf-tq-034",
+        "{{adult2}}",
+        "Two"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+2 minutes'))",
+      "params": [
+        "perf-gr-078",
+        "perf-rd-09",
+        "perf-tg-078",
+        1,
+        3,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+38 minutes'))",
+      "params": [
+        "perf-tg-079",
+        "perf-rd-09",
+        "perf-tq-034",
+        "{{child}}",
+        "1"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+2 minutes'))",
+      "params": [
+        "perf-gr-079",
+        "perf-rd-09",
+        "perf-tg-079",
+        0,
+        0,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-50 days','-36 minutes'))",
+      "params": [
+        "perf-tq-035",
+        "perf-rd-09",
+        "Which bird cannot fly but swims very well?",
+        "Penguin",
+        "Penguin",
+        1,
+        3,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+33 minutes'))",
+      "params": [
+        "perf-tg-080",
+        "perf-rd-09",
+        "perf-tq-035",
+        "{{partner}}",
+        "penguin"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+3 minutes'))",
+      "params": [
+        "perf-gr-080",
+        "perf-rd-09",
+        "perf-tg-080",
+        1,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+36 minutes'))",
+      "params": [
+        "perf-tg-081",
+        "perf-rd-09",
+        "perf-tq-035",
+        "{{adult2}}",
+        "Penguin"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+3 minutes'))",
+      "params": [
+        "perf-gr-081",
+        "perf-rd-09",
+        "perf-tg-081",
+        1,
+        1,
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','+39 minutes'))",
+      "params": [
+        "perf-tg-082",
+        "perf-rd-09",
+        "perf-tq-035",
+        "{{child}}",
+        "Ostrich"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','+3 minutes'))",
+      "params": [
+        "perf-gr-082",
+        "perf-rd-09",
+        "perf-tg-082",
+        0,
+        0,
+        "{{me}}"
+      ]
+    }
+  ]
+}
