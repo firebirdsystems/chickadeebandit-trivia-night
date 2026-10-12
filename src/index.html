@@ -251,27 +251,29 @@ async function refresh() {
     loadedOnce = true; loadFailed = false;
     render();
   } catch (e) {
-    if (loadedOnce) error = e.message; else loadFailed = true;
+    if (loadedOnce) error = failText(e, "Couldn’t load the latest rounds."); else loadFailed = true;
     render();
   }
 }
 
 function showError(msg) { error = msg; render(); }
+// Only wording this app wrote for the reader is shown; the hub's own error text
+// goes to the console and the reader gets the fixed line.
+function failText(e, line) {
+  if (!e?.forUser) console.error(e);
+  return e?.forUser ? e.message : line;
+}
 
 /* ── Mutations ─────────────────────────────────────────────────────────────── */
 async function createRound(title) {
   const row = { id: crypto.randomUUID(), title, status: "draft", visibility: "everyone", created_by: me.id, created_at: nowIso() };
+  // Not drawn until the hub has it: a save that fails throws to the form,
+  // which says so and stays open as typed (see submitModalForm).
+  await db("INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?,?,?,?,?,?)",
+    [row.id, row.title, row.status, row.visibility, row.created_by, row.created_at]);
   rounds = [row, ...rounds];
   openRoundId = row.id;
   closeModal(); render();
-  try {
-    await db("INSERT INTO app_trivia_night__rounds (id, title, status, visibility, created_by, created_at) VALUES (?,?,?,?,?,?)",
-      [row.id, row.title, row.status, row.visibility, row.created_by, row.created_at]);
-  } catch (e) {
-    rounds = rounds.filter((r) => r.id !== row.id);
-    openRoundId = null;
-    showError(e.message);
-  }
 }
 
 async function setRoundStatus(id, status) {
@@ -298,7 +300,7 @@ async function setRoundStatus(id, status) {
     // Only a status that was not saved is put back, and by id: refresh() may
     // have replaced the list since `idx` was read.
     if (!saved) rounds = rounds.map((r) => (r.id === id ? prev : r));
-    showError(e.message);
+    showError(failText(e, saved ? "Couldn’t finish updating the round — try again." : "Couldn’t update the round — try again."));
   }
 }
 
@@ -310,7 +312,7 @@ async function deleteRound(id) {
   if (openRoundId === id) openRoundId = null;
   render();
   try { await db("DELETE FROM app_trivia_night__rounds WHERE id=?", [id]); }
-  catch (e) { ({ rounds, questions, guesses, gradings } = prev); showError(e.message); }
+  catch (e) { ({ rounds, questions, guesses, gradings } = prev); showError(failText(e, "Couldn’t delete the round — try again.")); }
 }
 
 async function addQuestion(roundId, prompt, answer, points) {
@@ -319,12 +321,11 @@ async function addQuestion(roundId, prompt, answer, points) {
     revealed_answer: "", points, sort_order: roundQuestions(questions, roundId).length,
     created_by: me.id, created_at: nowIso(),
   };
+  // As in createRound: drawn, and the form closed, only once the hub has it.
+  await db("INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?,?,?,?,?,?,?,?,?)",
+    [row.id, row.round_id, row.prompt, row.correct_answer, row.revealed_answer, row.points, row.sort_order, row.created_by, row.created_at]);
   questions = [...questions, row];
   closeModal(); render();
-  try {
-    await db("INSERT INTO app_trivia_night__questions (id, round_id, prompt, correct_answer, revealed_answer, points, sort_order, created_by, created_at) VALUES (?,?,?,?,?,?,?,?,?)",
-      [row.id, row.round_id, row.prompt, row.correct_answer, row.revealed_answer, row.points, row.sort_order, row.created_by, row.created_at]);
-  } catch (e) { questions = questions.filter((q) => q.id !== row.id); showError(e.message); }
 }
 
 async function deleteQuestion(id) {
@@ -332,7 +333,7 @@ async function deleteQuestion(id) {
   questions = questions.filter((q) => q.id !== id);
   render();
   try { await db("DELETE FROM app_trivia_night__questions WHERE id=?", [id]); }
-  catch (e) { questions = prev; showError(e.message); }
+  catch (e) { questions = prev; showError(failText(e, "Couldn’t delete the question — try again.")); }
 }
 
 async function submitGuess(round, questionId, text) {
@@ -342,7 +343,13 @@ async function submitGuess(round, questionId, text) {
   try {
     await db("INSERT INTO app_trivia_night__guesses (id, round_id, question_id, member_id, guess_text, created_at) VALUES (?,?,?,?,?,?)",
       [row.id, row.round_id, row.question_id, row.member_id, row.guess_text, row.created_at]);
-  } catch (e) { guesses = guesses.filter((g) => g.id !== row.id); showError(e.message); }
+  } catch (e) {
+    // The page is drawn whole, so the guess goes back in its box to send again.
+    guesses = guesses.filter((g) => g.id !== row.id);
+    showError(failText(e, "Couldn’t send your guess — try again."));
+    const input = document.querySelector(`[data-guess-form="${CSS.escape(questionId)}"] input`);
+    if (input) input.value = text;
+  }
 }
 
 async function gradeGuess(round, guess, correct) {
@@ -356,7 +363,7 @@ async function gradeGuess(round, guess, correct) {
     render();
     try {
       await db("UPDATE app_trivia_night__gradings SET correct=?, points_awarded=? WHERE id=?", [existing.correct, existing.points_awarded, existing.id]);
-    } catch (e) { Object.assign(existing, prev); showError(e.message); }
+    } catch (e) { Object.assign(existing, prev); showError(failText(e, "Couldn’t save the grade — try again.")); }
     return;
   }
   const row = { id: crypto.randomUUID(), round_id: round.id, guess_id: guess.id, correct: correct ? 1 : 0, points_awarded: points, graded_by: me.id, created_at: nowIso() };
@@ -365,7 +372,7 @@ async function gradeGuess(round, guess, correct) {
   try {
     await db("INSERT INTO app_trivia_night__gradings (id, round_id, guess_id, correct, points_awarded, graded_by, created_at) VALUES (?,?,?,?,?,?,?)",
       [row.id, row.round_id, row.guess_id, row.correct, row.points_awarded, row.graded_by, row.created_at]);
-  } catch (e) { gradings = gradings.filter((g) => g.id !== row.id); showError(e.message); }
+  } catch (e) { gradings = gradings.filter((g) => g.id !== row.id); showError(failText(e, "Couldn’t save the grade — try again.")); }
 }
 
 /** Host-only: copy each question's (host-visible) answer into revealed_answer. */
@@ -376,7 +383,7 @@ async function revealAnswers(round) {
     q.revealed_answer = q.correct_answer;
     try {
       await db("UPDATE app_trivia_night__questions SET revealed_answer=? WHERE id=?", [q.correct_answer, q.id]);
-    } catch (e) { q.revealed_answer = prev; showError(e.message); return; }
+    } catch (e) { q.revealed_answer = prev; showError(failText(e, "Couldn’t reveal the answers — try again.")); return; }
   }
   render();
 }
@@ -525,7 +532,7 @@ function render() {
       if (!text) { input.focus(); return; }
       const btn = form.querySelector("button");
       if (btn) { btn.disabled = true; btn.textContent = "Sealing…"; }
-      submitGuess(round, qid, text).catch((err) => showError(err.message));
+      submitGuess(round, qid, text).catch((err) => showError(failText(err, "Couldn’t send your guess — try again.")));
     });
   });
 }
@@ -541,12 +548,28 @@ function openModal(html) {
 }
 function closeModal() { modalEl?.remove(); modalEl = null; }
 
+// Sends a modal form's save. The form stays open, as typed, until the save
+// lands; one that fails is said in the form's own error line and the button
+// comes back to send it again.
+function submitModalForm(form, busyLabel, save) {
+  const btn = form.querySelector('button[type="submit"]');
+  const note = form.querySelector("[data-form-error]");
+  if (btn?.disabled) return;
+  const label = btn?.textContent;
+  if (btn) { btn.disabled = true; btn.textContent = busyLabel; }
+  if (note) note.hidden = true;
+  save()
+    .catch((err) => { console.error(err); if (note) { note.textContent = "Couldn’t save — try again."; note.hidden = false; } })
+    .finally(() => { if (btn) { btn.disabled = false; btn.textContent = label; } });
+}
+
 function openRoundEditor() {
   openModal(`
     <h2>New trivia round</h2>
     <form class="form" id="round-form">
       <div class="field"><label for="r-title">Title</label><input id="r-title" data-autofocus placeholder="Friday Night Trivia" required /></div>
       <p class="tiny muted">You'll be the host: add questions in draft, open the round for guesses, then close it to reveal and grade.</p>
+      <div class="error" role="alert" data-form-error hidden></div>
       <div class="modal-actions">
         <button type="button" class="btn btn-ghost" data-cancel>Cancel</button>
         <button type="submit" class="btn">Create</button>
@@ -557,9 +580,7 @@ function openRoundEditor() {
     e.preventDefault();
     const title = document.getElementById("r-title").value.trim();
     if (!title) { document.getElementById("r-title").focus(); return; }
-    const btn = modalEl?.querySelector('button[type="submit"]');
-    if (btn) { btn.disabled = true; btn.textContent = "Creating…"; }
-    createRound(title).catch((err) => showError(err.message));
+    submitModalForm(e.target, "Creating…", () => createRound(title));
   });
 }
 
@@ -572,6 +593,7 @@ function openQuestionEditor(roundId) {
         <div class="field"><label for="q-answer">Correct answer <span class="muted" style="text-transform:none">(only you can see it)</span></label><input id="q-answer" required /></div>
         <div class="field"><label for="q-points">Points</label><input id="q-points" type="number" min="1" max="10" value="1" /></div>
       </div>
+      <div class="error" role="alert" data-form-error hidden></div>
       <div class="modal-actions">
         <button type="button" class="btn btn-ghost" data-cancel>Cancel</button>
         <button type="submit" class="btn">Add</button>
@@ -585,9 +607,7 @@ function openQuestionEditor(roundId) {
     if (!prompt) { document.getElementById("q-prompt").focus(); return; }
     if (!answer) { document.getElementById("q-answer").focus(); return; }
     const points = Math.max(1, Math.min(10, Number(document.getElementById("q-points").value) || 1));
-    const btn = modalEl?.querySelector('button[type="submit"]');
-    if (btn) { btn.disabled = true; btn.textContent = "Adding…"; }
-    addQuestion(roundId, prompt, answer, points).catch((err) => showError(err.message));
+    submitModalForm(e.target, "Adding…", () => addQuestion(roundId, prompt, answer, points));
   });
 }
 
@@ -603,20 +623,20 @@ document.addEventListener("click", (e) => {
   if (t.hasAttribute("data-new-round")) { openRoundEditor(); return; }
   if (!round) return;
   if (t.hasAttribute("data-add-question")) { openQuestionEditor(round.id); return; }
-  if (t.hasAttribute("data-delete-question")) { deleteQuestion(t.getAttribute("data-delete-question")).catch((err) => showError(err.message)); return; }
+  if (t.hasAttribute("data-delete-question")) { deleteQuestion(t.getAttribute("data-delete-question")).catch((err) => showError(failText(err, "Couldn’t delete the question — try again."))); return; }
   if (t.hasAttribute("data-open-round")) {
     if (!roundQuestions(questions, round.id).length) { hubAlert("Add at least one question first."); return; }
-    setRoundStatus(round.id, "open").catch((err) => showError(err.message));
+    setRoundStatus(round.id, "open").catch((err) => showError(failText(err, "Couldn’t open the round — try again.")));
     return;
   }
-  if (t.hasAttribute("data-close-round")) { setRoundStatus(round.id, "closed").catch((err) => showError(err.message)); return; }
-  if (t.hasAttribute("data-reveal-answers")) { revealAnswers(round).catch((err) => showError(err.message)); return; }
+  if (t.hasAttribute("data-close-round")) { setRoundStatus(round.id, "closed").catch((err) => showError(failText(err, "Couldn’t close the round — try again."))); return; }
+  if (t.hasAttribute("data-reveal-answers")) { revealAnswers(round).catch((err) => showError(failText(err, "Couldn’t reveal the answers — try again."))); return; }
   if (t.hasAttribute("data-delete-round")) { deleteRound(round.id); return; }
   if (t.hasAttribute("data-grade-yes") || t.hasAttribute("data-grade-no")) {
     const yes = t.hasAttribute("data-grade-yes");
     const guessId = t.getAttribute(yes ? "data-grade-yes" : "data-grade-no");
     const guess = guesses.find((g) => g.id === guessId);
-    if (guess) gradeGuess(round, guess, yes).catch((err) => showError(err.message));
+    if (guess) gradeGuess(round, guess, yes).catch((err) => showError(failText(err, "Couldn’t save the grade — try again.")));
   }
 });
 
