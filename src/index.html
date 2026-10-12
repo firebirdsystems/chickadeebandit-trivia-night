@@ -90,6 +90,8 @@
     .score-name { flex: 1; font-weight: 700; }
     .score-pts { font-weight: 800; }
     .empty { color: var(--muted); text-align: center; padding: 30px 16px; }
+    .load-error { margin: 0 0 12px; padding: 10px 14px; border-radius: 10px; background: var(--hub-tint-danger, #fee2e2); color: var(--hub-tint-danger-fg, #b91c1c); font-size: 0.9rem; display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+    .load-error-retry { background: none; border: 1px solid currentColor; border-radius: 8px; padding: 5px 10px; font: inherit; font-weight: 600; color: inherit; cursor: pointer; flex-shrink: 0; }
     .error { background: var(--red-soft); color: var(--red); padding: 9px 12px; border-radius: 8px; margin-bottom: 10px; font-size: .86rem; }
     .section-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 18px 2px 8px; }
     input, textarea {
@@ -156,6 +158,9 @@ let guesses = [];   // hub-filtered: mine + released rounds
 let gradings = [];
 let openRoundId = null;
 let error = "";
+// Set while the first load has not succeeded: the rounds are unknown, not empty.
+let loadFailed = false;
+let loadedOnce = false;
 let modalEl = null;
 
 function nowIso() { return new Date().toISOString(); }
@@ -169,13 +174,14 @@ async function db(sql, params = []) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ sql, params }),
   });
-  const json = await res.json();
-  if (json.error) throw new Error(json.error);
+  const json = await res.json().catch(() => null);
+  if (!res.ok || !json || typeof json !== "object" || json.error) throw new Error(json?.error || "Couldn’t reach the hub. Try again.");
   return json;
 }
 
 /* ── Loading ───────────────────────────────────────────────────────────────── */
 async function loadMembers() {
+  let unread = null;
   if (!CONTEXT) {
     members = [
       { id: "demo-1", name: "Alex", role: "adult" },
@@ -183,13 +189,17 @@ async function loadMembers() {
       { id: "demo-3", name: "Casey", role: "child" },
     ];
   } else {
+    // A member list that could not be read is a failed load, not a household with nobody in it.
     try {
       const res = await fetch(`${CONTEXT}?keys=family.members`);
-      members = ((await res.json())["family.members"]) ?? [];
-    } catch { members = []; }
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data || typeof data !== "object" || data.error || (Array.isArray(data.$errors) && data.$errors.includes("family.members"))) throw new Error("Couldn’t reach the hub. Try again.");
+      members = data["family.members"] ?? [];
+    } catch (e) { unread = e; }
   }
   memberMap = new Map(members.map((m) => [m.id, m]));
   me = HUB_MEMBER ?? members[0] ?? { id: "guest", name: "Guest", role: "adult" };
+  if (unread) throw unread;
 }
 
 async function loadData() {
@@ -238,8 +248,12 @@ async function refresh() {
   try {
     await Promise.all([loadMembers(), loadData()]);
     if (openRoundId && !rounds.some((r) => r.id === openRoundId)) openRoundId = null;
+    loadedOnce = true; loadFailed = false;
     render();
-  } catch (e) { error = e.message; render(); }
+  } catch (e) {
+    if (loadedOnce) error = e.message; else loadFailed = true;
+    render();
+  }
 }
 
 function showError(msg) { error = msg; render(); }
@@ -266,8 +280,10 @@ async function setRoundStatus(id, status) {
   const prev = rounds[idx];
   rounds[idx] = { ...prev, status };
   render();
+  let saved = false;
   try {
     await db("UPDATE app_trivia_night__rounds SET status=? WHERE id=?", [status, id]);
+    saved = true;
     if (status === "closed") await refresh(); // sealed guesses just released
     // Real transitions only — re-saving the same status publishes nothing. No
     // question, answer or guess text travels: opening is an invitation and
@@ -278,7 +294,12 @@ async function setRoundStatus(id, status) {
         host_id: prev.created_by,
       });
     }
-  } catch (e) { rounds[idx] = prev; showError(e.message); }
+  } catch (e) {
+    // Only a status that was not saved is put back, and by id: refresh() may
+    // have replaced the list since `idx` was read.
+    if (!saved) rounds = rounds.map((r) => (r.id === id ? prev : r));
+    showError(e.message);
+  }
 }
 
 async function deleteRound(id) {
@@ -382,8 +403,9 @@ function renderRoundList() {
         <h1>${glyph("lightbulb")} Trivia Night</h1>
         <p class="muted tiny">Sealed guesses. No cheating possible — the hub keeps answers hidden.</p>
       </div>
-      <button class="btn" data-new-round>+ New round</button>
+      ${loadFailed ? "" : `<button class="btn" data-new-round>+ New round</button>`}
     </div>
+    ${loadFailed ? `<div class="load-error" data-testid="load-error" role="alert"><span>Couldn’t load the trivia rounds.</span> <button type="button" class="load-error-retry" data-testid="load-retry">Try again</button></div>` : ""}
     ${error ? `<div class="error">${esc(error)}</div>` : ""}
     ${all.length ? `<div class="search-row"><input id="search" class="search-input" type="search" placeholder="Search rounds…" aria-label="Search rounds" value="${esc(searchQ)}" /></div>` : ""}
     ${list.length ? `<div class="stack">${list.map((r) => {
@@ -396,7 +418,7 @@ function renderRoundList() {
         </div>
         <span class="pill ${esc(r.status)}">${esc(statusLabel(r.status))}</span>
       </button>`;
-    }).join("")}</div>` : `<div class="card empty">${searchQ ? `No rounds match "${esc(searchQ)}".` : "No rounds yet — host the first one!"}</div>`}
+    }).join("")}</div>` : loadFailed ? "" : `<div class="card empty">${searchQ ? `No rounds match "${esc(searchQ)}".` : "No rounds yet — host the first one!"}</div>`}
   `;
 }
 
@@ -574,6 +596,7 @@ document.addEventListener("click", (e) => {
   const t = e.target.closest("button");
   if (!t) return;
   const round = openRoundId ? rounds.find((r) => r.id === openRoundId) : null;
+  if (t.matches('[data-testid="load-retry"]')) { refresh(); return; }
   if (t.hasAttribute("data-open")) { openRoundId = t.getAttribute("data-open"); render(); return; }
   if (t.hasAttribute("data-back")) { openRoundId = null; render(); return; }
   if (t.hasAttribute("data-cancel")) { closeModal(); return; }
