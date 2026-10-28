@@ -25,7 +25,7 @@
 -- integers, so no db_plaintext_columns are needed. Prompts, answers, and
 -- guesses stay encrypted at rest.
 CREATE TABLE IF NOT EXISTS app_trivia_night__rounds (
-  id         TEXT PRIMARY KEY,
+  id         TEXT NOT NULL PRIMARY KEY,
   title      TEXT NOT NULL,                    -- "Friday Night Trivia #3"
   status     TEXT NOT NULL DEFAULT 'draft',    -- draft|open|closed
   visibility TEXT NOT NULL DEFAULT 'everyone',
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS app_trivia_night__rounds (
 );
 
 CREATE TABLE IF NOT EXISTS app_trivia_night__questions (
-  id              TEXT PRIMARY KEY,
+  id              TEXT NOT NULL PRIMARY KEY,
   round_id        TEXT NOT NULL,
   prompt          TEXT NOT NULL,
   correct_answer  TEXT NOT NULL DEFAULT '',    -- masked to the host via column_read_acls
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS app_trivia_night__questions (
 );
 
 CREATE TABLE IF NOT EXISTS app_trivia_night__guesses (
-  id          TEXT PRIMARY KEY,
+  id          TEXT NOT NULL PRIMARY KEY,
   round_id    TEXT NOT NULL,
   question_id TEXT NOT NULL,
   member_id   TEXT NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS app_trivia_night__guesses (
 );
 
 CREATE TABLE IF NOT EXISTS app_trivia_night__gradings (
-  id             TEXT PRIMARY KEY,
+  id             TEXT NOT NULL PRIMARY KEY,
   round_id       TEXT NOT NULL,
   guess_id       TEXT NOT NULL,
   correct        INTEGER NOT NULL DEFAULT 0,
